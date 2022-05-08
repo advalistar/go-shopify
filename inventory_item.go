@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -14,6 +15,7 @@ const inventoryItemsBasePath = "inventory_items"
 // See https://help.shopify.com/en/api/reference/inventory/inventoryitem
 type InventoryItemService interface {
 	List(interface{}) ([]InventoryItem, error)
+	ListWithPagination(interface{}) ([]InventoryItem, *Pagination, error)
 	Get(int64, interface{}) (*InventoryItem, error)
 	Update(InventoryItem) (*InventoryItem, error)
 }
@@ -50,6 +52,27 @@ func (s *InventoryItemServiceOp) List(options interface{}) ([]InventoryItem, err
 	resource := new(InventoryItemsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.InventoryItems, err
+}
+
+func (s *InventoryItemServiceOp) ListWithPagination(options interface{}) ([]InventoryItem, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", inventoryItemsBasePath)
+	resource := new(InventoryItemsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.InventoryItems, pagination, nil
 }
 
 // Get a inventory item

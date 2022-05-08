@@ -2,17 +2,21 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
-const customCollectionsBasePath = "custom_collections"
-const customCollectionsResourceName = "collections"
+const (
+	customCollectionsBasePath     = "custom_collections"
+	customCollectionsResourceName = "collections"
+)
 
 // CustomCollectionService is an interface for interacting with the custom
 // collection endpoints of the Shopify API.
 // See https://help.shopify.com/api/reference/customcollection
 type CustomCollectionService interface {
 	List(interface{}) ([]CustomCollection, error)
+	ListWithPagination(interface{}) ([]CustomCollection, *Pagination, error)
 	Count(interface{}) (int, error)
 	Get(int64, interface{}) (*CustomCollection, error)
 	Create(CustomCollection) (*CustomCollection, error)
@@ -61,6 +65,27 @@ func (s *CustomCollectionServiceOp) List(options interface{}) ([]CustomCollectio
 	resource := new(CustomCollectionsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Collections, err
+}
+
+func (s *CustomCollectionServiceOp) ListWithPagination(options interface{}) ([]CustomCollection, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", customCollectionsBasePath)
+	resource := new(CustomCollectionsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.Collections, pagination, nil
 }
 
 // Count custom collections

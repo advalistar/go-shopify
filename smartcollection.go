@@ -2,17 +2,21 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
-const smartCollectionsBasePath = "smart_collections"
-const smartCollectionsResourceName = "collections"
+const (
+	smartCollectionsBasePath     = "smart_collections"
+	smartCollectionsResourceName = "collections"
+)
 
 // SmartCollectionService is an interface for interacting with the smart
 // collection endpoints of the Shopify API.
 // See https://help.shopify.com/api/reference/smartcollection
 type SmartCollectionService interface {
 	List(interface{}) ([]SmartCollection, error)
+	ListWithPagination(interface{}) ([]SmartCollection, *Pagination, error)
 	Count(interface{}) (int, error)
 	Get(int64, interface{}) (*SmartCollection, error)
 	Create(SmartCollection) (*SmartCollection, error)
@@ -69,6 +73,27 @@ func (s *SmartCollectionServiceOp) List(options interface{}) ([]SmartCollection,
 	resource := new(SmartCollectionsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Collections, err
+}
+
+func (s *SmartCollectionServiceOp) ListWithPagination(options interface{}) ([]SmartCollection, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", smartCollectionsBasePath)
+	resource := new(SmartCollectionsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.Collections, pagination, nil
 }
 
 // Count smart collections

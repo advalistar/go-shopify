@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -17,6 +18,7 @@ const (
 // See: https://help.shopify.com/api/reference/orders/draftorder
 type DraftOrderService interface {
 	List(interface{}) ([]DraftOrder, error)
+	ListWithPagination(interface{}) ([]DraftOrder, *Pagination, error)
 	Count(interface{}) (int, error)
 	Get(int64, interface{}) (*DraftOrder, error)
 	Create(DraftOrder) (*DraftOrder, error)
@@ -132,6 +134,27 @@ func (s *DraftOrderServiceOp) List(options interface{}) ([]DraftOrder, error) {
 	resource := new(DraftOrdersResource)
 	err := s.client.Get(path, resource, options)
 	return resource.DraftOrders, err
+}
+
+func (s *DraftOrderServiceOp) ListWithPagination(options interface{}) ([]DraftOrder, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", draftOrdersBasePath)
+	resource := new(DraftOrdersResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.DraftOrders, pagination, nil
 }
 
 // Count draft orders
