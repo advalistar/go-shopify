@@ -111,6 +111,7 @@ type Client struct {
 	Location                   LocationService
 	DiscountCode               DiscountCodeService
 	PriceRule                  PriceRuleService
+	Event                      EventService
 	InventoryItem              InventoryItemService
 	ShippingZone               ShippingZoneService
 	ProductListing             ProductListingService
@@ -358,6 +359,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Location = &LocationServiceOp{client: c}
 	c.DiscountCode = &DiscountCodeServiceOp{client: c}
 	c.PriceRule = &PriceRuleServiceOp{client: c}
+	c.Event = &EventServiceOp{client: c}
 	c.InventoryItem = &InventoryItemServiceOp{client: c}
 	c.ShippingZone = &ShippingZoneServiceOp{client: c}
 	c.ProductListing = &ProductListingServiceOp{client: c}
