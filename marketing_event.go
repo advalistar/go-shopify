@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -15,6 +16,7 @@ const marketingEventBasePath = "marketing_events"
 type MarketingEventService interface {
 	Get(int64, interface{}) (*MarketingEvent, error)
 	List(interface{}) ([]MarketingEvent, error)
+	ListWithPagination(interface{}) ([]MarketingEvent, *Pagination, error)
 }
 
 type MarketingEventServiceOp struct {
@@ -75,4 +77,25 @@ func (s MarketingEventServiceOp) List(options interface{}) ([]MarketingEvent, er
 	path := fmt.Sprintf("%s.json", marketingEventBasePath)
 	resource := &MarketingEventsResource{}
 	return resource.MarketingEvents, s.client.Get(path, resource, options)
+}
+
+func (s *MarketingEventServiceOp) ListWithPagination(options interface{}) ([]MarketingEvent, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", marketingEventBasePath)
+	resource := new(MarketingEventsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.MarketingEvents, pagination, nil
 }

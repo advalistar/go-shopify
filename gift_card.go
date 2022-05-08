@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -15,6 +16,7 @@ const giftCardBasePath = "gift_cards"
 type GiftCardService interface {
 	Get(int64, interface{}) (*GiftCard, error)
 	List(interface{}) ([]GiftCard, error)
+	ListWithPagination(interface{}) ([]GiftCard, *Pagination, error)
 }
 
 type GiftCardServiceOp struct {
@@ -64,4 +66,25 @@ func (s GiftCardServiceOp) List(options interface{}) ([]GiftCard, error) {
 	path := fmt.Sprintf("%s.json", giftCardBasePath)
 	resource := &GiftCardsResource{}
 	return resource.GiftCards, s.client.Get(path, resource, options)
+}
+
+func (s *GiftCardServiceOp) ListWithPagination(options interface{}) ([]GiftCard, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", giftCardBasePath)
+	resource := new(GiftCardsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.GiftCards, pagination, nil
 }

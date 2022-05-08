@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -13,6 +14,7 @@ const eventBasePath = "events"
 type EventService interface {
 	Get(int64, interface{}) (*Event, error)
 	List(interface{}) ([]Event, error)
+	ListWithPagination(interface{}) ([]Event, *Pagination, error)
 }
 
 type EventServiceOp struct {
@@ -57,4 +59,25 @@ func (s EventServiceOp) List(options interface{}) ([]Event, error) {
 	path := fmt.Sprintf("%s.json", eventBasePath)
 	resource := &EventsResource{}
 	return resource.Events, s.client.Get(path, resource, options)
+}
+
+func (s *EventServiceOp) ListWithPagination(options interface{}) ([]Event, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", eventBasePath)
+	resource := new(EventsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.Events, pagination, nil
 }
