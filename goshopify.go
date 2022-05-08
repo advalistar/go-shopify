@@ -109,6 +109,7 @@ type Client struct {
 	Collect                    CollectService
 	Collection                 CollectionService
 	Location                   LocationService
+	MarketingEvent             MarketingEventService
 	DiscountCode               DiscountCodeService
 	PriceRule                  PriceRuleService
 	Event                      EventService
@@ -116,6 +117,7 @@ type Client struct {
 	ShippingZone               ShippingZoneService
 	ProductListing             ProductListingService
 	AccessScopes               AccessScopesService
+	GiftCard                   GiftCardService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -357,6 +359,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Collect = &CollectServiceOp{client: c}
 	c.Collection = &CollectionServiceOp{client: c}
 	c.Location = &LocationServiceOp{client: c}
+	c.MarketingEvent = &MarketingEventServiceOp{client: c}
 	c.DiscountCode = &DiscountCodeServiceOp{client: c}
 	c.PriceRule = &PriceRuleServiceOp{client: c}
 	c.Event = &EventServiceOp{client: c}
@@ -364,6 +367,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.ShippingZone = &ShippingZoneServiceOp{client: c}
 	c.ProductListing = &ProductListingServiceOp{client: c}
 	c.AccessScopes = &AccessScopesServiceOp{client: c}
+	c.GiftCard = &GiftCardServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {
