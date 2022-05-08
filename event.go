@@ -9,7 +9,7 @@ const eventBasePath = "events"
 
 // EventService is an interface for interacting with the
 // Event endpoints of the Shopify API.
-// See https://help.shopify.com/api/reference/billing/applicationevent
+// See https://help.shopify.com/api/reference/events
 type EventService interface {
 	Get(int64, interface{}) (*Event, error)
 	List(interface{}) ([]Event, error)
@@ -36,25 +36,25 @@ type Event struct {
 // EventResource represents the result from the
 // admin/events{/X{/activate.json}.json}.json endpoints.
 type EventResource struct {
-	Credit *Event `json:"event"`
+	Event *Event `json:"event"`
 }
 
 // EventsResource represents the result from the
 // admin/events.json endpoint.
 type EventsResource struct {
-	Credits []Event `json:"events"`
+	Events []Event `json:"events"`
 }
 
 // Get gets individual application event.
-func (a EventServiceOp) Get(eventID int64, options interface{}) (*Event, error) {
+func (s EventServiceOp) Get(eventID int64, options interface{}) (*Event, error) {
 	path := fmt.Sprintf("%s/%d.json", eventBasePath, eventID)
 	resource := &EventResource{}
-	return resource.Credit, a.client.Get(path, resource, options)
+	return resource.Event, s.client.Get(path, resource, options)
 }
 
 // List gets all application events.
-func (a EventServiceOp) List(options interface{}) ([]Event, error) {
+func (s EventServiceOp) List(options interface{}) ([]Event, error) {
 	path := fmt.Sprintf("%s.json", eventBasePath)
 	resource := &EventsResource{}
-	return resource.Credits, a.client.Get(path, resource, options)
+	return resource.Events, s.client.Get(path, resource, options)
 }

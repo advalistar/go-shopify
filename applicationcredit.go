@@ -41,22 +41,22 @@ type ApplicationCreditsResource struct {
 }
 
 // Create creates new application credit.
-func (a ApplicationCreditServiceOp) Create(credit ApplicationCredit) (*ApplicationCredit, error) {
+func (s ApplicationCreditServiceOp) Create(credit ApplicationCredit) (*ApplicationCredit, error) {
 	path := fmt.Sprintf("%s.json", applicationCreditsBasePath)
 	resource := &ApplicationCreditResource{}
-	return resource.Credit, a.client.Post(path, ApplicationCreditResource{Credit: &credit}, resource)
+	return resource.Credit, s.client.Post(path, ApplicationCreditResource{Credit: &credit}, resource)
 }
 
 // Get gets individual application credit.
-func (a ApplicationCreditServiceOp) Get(creditID int64, options interface{}) (*ApplicationCredit, error) {
+func (s ApplicationCreditServiceOp) Get(creditID int64, options interface{}) (*ApplicationCredit, error) {
 	path := fmt.Sprintf("%s/%d.json", applicationCreditsBasePath, creditID)
 	resource := &ApplicationCreditResource{}
-	return resource.Credit, a.client.Get(path, resource, options)
+	return resource.Credit, s.client.Get(path, resource, options)
 }
 
 // List gets all application credits.
-func (a ApplicationCreditServiceOp) List(options interface{}) ([]ApplicationCredit, error) {
+func (s ApplicationCreditServiceOp) List(options interface{}) ([]ApplicationCredit, error) {
 	path := fmt.Sprintf("%s.json", applicationCreditsBasePath)
 	resource := &ApplicationCreditsResource{}
-	return resource.Credits, a.client.Get(path, resource, options)
+	return resource.Credits, s.client.Get(path, resource, options)
 }
