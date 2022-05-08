@@ -102,6 +102,7 @@ type Client struct {
 	Metafield                  MetafieldService
 	Blog                       BlogService
 	ApplicationCharge          ApplicationChargeService
+	ApplicationCredit          ApplicationCreditService
 	Redirect                   RedirectService
 	Page                       PageService
 	StorefrontAccessToken      StorefrontAccessTokenService
@@ -347,6 +348,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Metafield = &MetafieldServiceOp{client: c}
 	c.Blog = &BlogServiceOp{client: c}
 	c.ApplicationCharge = &ApplicationChargeServiceOp{client: c}
+	c.ApplicationCredit = &ApplicationCreditServiceOp{client: c}
 	c.Redirect = &RedirectServiceOp{client: c}
 	c.Page = &PageServiceOp{client: c}
 	c.StorefrontAccessToken = &StorefrontAccessTokenServiceOp{client: c}
