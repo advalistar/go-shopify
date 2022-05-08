@@ -30,12 +30,12 @@ type ApplicationCharge struct {
 	Price              *decimal.Decimal `json:"price"`
 	Status             string           `json:"status"`
 	ReturnURL          string           `json:"return_url"`
-	Test               *bool            `json:"test"`
+	Test               bool             `json:"test"`
 	CreatedAt          *time.Time       `json:"created_at"`
 	UpdatedAt          *time.Time       `json:"updated_at"`
-	ChargeType         *string          `json:"charge_type"`
+	ChargeType         string           `json:"charge_type"`
 	DecoratedReturnURL string           `json:"decorated_return_url"`
-	ConfirmationURL    string           `json:"confirmation_url"`
+	ConfirmationURL    string           `json:"confirmation_url,omitempty"`
 }
 
 // ApplicationChargeResource represents the result from the

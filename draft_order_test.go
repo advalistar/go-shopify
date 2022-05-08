@@ -12,7 +12,7 @@ import (
 
 func draftOrderTests(t *testing.T, draftOrder DraftOrder) {
 	// Check that dates are parsed
-	d := time.Date(2019, time.April, 9, 10, 02, 43, 0, time.UTC)
+	d := time.Date(2019, time.April, 9, 10, 0o2, 43, 0, time.UTC)
 	if !d.Equal(*draftOrder.CreatedAt) {
 		t.Errorf("Order.CreatedAt returned %+v, expected %+v", draftOrder.CreatedAt, d)
 	}
@@ -72,8 +72,8 @@ func TestDraftOrderCreate(t *testing.T) {
 		httpmock.NewStringResponder(201, `{"draft_order":{"id": 1}}`))
 
 	draftOrder := DraftOrder{
-		LineItems: []LineItem{
-			LineItem{
+		LineItems: []*LineItem{
+			{
 				VariantID: 1,
 				Quantity:  1,
 			},
@@ -113,7 +113,6 @@ func TestDraftOrderUpdate(t *testing.T) {
 	if d.ID != expected.ID {
 		t.Errorf("DraftOrder.Update returned id %d, expected %d", d.ID, expected.ID)
 	}
-
 }
 
 func TestDraftOrderCount(t *testing.T) {
@@ -244,6 +243,7 @@ func TestDraftOrderDelete(t *testing.T) {
 		t.Errorf("DraftOrder.Delete returned an error %v", err)
 	}
 }
+
 func TestDraftOrderComplete(t *testing.T) {
 	setup()
 	defer teardown()

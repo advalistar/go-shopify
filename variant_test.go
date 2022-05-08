@@ -23,9 +23,9 @@ func variantTests(t *testing.T, variant Variant) {
 		t.Errorf("Variant.Title returned %+v, expected %+v", variant.Title, expectedTitle)
 	}
 
-	expectedInventoryItemId := int64(1)
-	if variant.InventoryItemId != expectedInventoryItemId {
-		t.Errorf("Variant.InventoryItemId returned %+v, expected %+v", variant.InventoryItemId, expectedInventoryItemId)
+	expectedInventoryItemID := int64(1)
+	if variant.InventoryItemID != expectedInventoryItemID {
+		t.Errorf("Variant.InventoryItemID returned %+v, expected %+v", variant.InventoryItemID, expectedInventoryItemID)
 	}
 
 	expectedMetafieldCount := 0
@@ -47,9 +47,9 @@ func variantWithMetafieldsTests(t *testing.T, variant Variant) {
 		t.Errorf("Variant.Title returned %+v, expected %+v", variant.Title, expectedTitle)
 	}
 
-	expectedInventoryItemId := int64(1)
-	if variant.InventoryItemId != expectedInventoryItemId {
-		t.Errorf("Variant.InventoryItemId returned %+v, expected %+v", variant.InventoryItemId, expectedInventoryItemId)
+	expectedInventoryItemID := int64(1)
+	if variant.InventoryItemID != expectedInventoryItemID {
+		t.Errorf("Variant.InventoryItemID returned %+v, expected %+v", variant.InventoryItemID, expectedInventoryItemID)
 	}
 
 	expectedMetafieldCount := 1
@@ -206,7 +206,7 @@ func TestVariantWithMetafieldsUpdate(t *testing.T) {
 	variant := Variant{
 		ID:      2,
 		Option1: "Green",
-		Metafields: []Metafield{
+		Metafields: []*Metafield{
 			{
 				ID:          123,
 				Description: "Original",
@@ -440,9 +440,9 @@ func variantTestsWithTaxCode(t *testing.T, variant Variant) {
 		t.Errorf("Variant.Title returned %+v, expected %+v", variant.Title, expectedTitle)
 	}
 
-	expectedInventoryItemId := int64(1)
-	if variant.InventoryItemId != expectedInventoryItemId {
-		t.Errorf("Variant.InventoryItemId returned %+v, expected %+v", variant.InventoryItemId, expectedInventoryItemId)
+	expectedInventoryItemID := int64(1)
+	if variant.InventoryItemID != expectedInventoryItemID {
+		t.Errorf("Variant.InventoryItemID returned %+v, expected %+v", variant.InventoryItemID, expectedInventoryItemID)
 	}
 
 	expectedMetafieldCount := 0
@@ -455,5 +455,4 @@ func variantTestsWithTaxCode(t *testing.T, variant Variant) {
 	if variant.TaxCode != expectedTacCode {
 		t.Errorf("Variant.TaxCode returned %+v, expected %+v", variant.TaxCode, expectedTacCode)
 	}
-
 }

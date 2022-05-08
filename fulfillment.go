@@ -43,28 +43,30 @@ type FulfillmentServiceOp struct {
 
 // Fulfillment represents a Shopify fulfillment.
 type Fulfillment struct {
-	ID              int64      `json:"id,omitempty"`
-	OrderID         int64      `json:"order_id,omitempty"`
-	LocationID      int64      `json:"location_id,omitempty"`
-	Status          string     `json:"status,omitempty"`
-	CreatedAt       *time.Time `json:"created_at,omitempty"`
-	Service         string     `json:"service,omitempty"`
-	UpdatedAt       *time.Time `json:"updated_at,omitempty"`
-	TrackingCompany string     `json:"tracking_company,omitempty"`
-	ShipmentStatus  string     `json:"shipment_status,omitempty"`
-	TrackingNumber  string     `json:"tracking_number,omitempty"`
-	TrackingNumbers []string   `json:"tracking_numbers,omitempty"`
-	TrackingUrl     string     `json:"tracking_url,omitempty"`
-	TrackingUrls    []string   `json:"tracking_urls,omitempty"`
-	Receipt         Receipt    `json:"receipt,omitempty"`
-	LineItems       []LineItem `json:"line_items,omitempty"`
-	NotifyCustomer  bool       `json:"notify_customer"`
+	ID                int64       `json:"id"`
+	AdminGraphqlAPIID string      `json:"admin_graphql_api_id"`
+	CreatedAt         *time.Time  `json:"created_at"`
+	LocationID        int64       `json:"location_id"`
+	Name              string      `json:"name"`
+	OrderID           int64       `json:"order_id"`
+	Receipt           *Receipt    `json:"receipt"`
+	Service           string      `json:"service"`
+	ShipmentStatus    string      `json:"shipment_status"`
+	Status            string      `json:"status"`
+	TrackingCompany   string      `json:"tracking_company"`
+	TrackingNumber    string      `json:"tracking_number"`
+	TrackingNumbers   []string    `json:"tracking_numbers"`
+	TrackingUrl       string      `json:"tracking_url"`
+	TrackingUrls      []string    `json:"tracking_urls"`
+	UpdatedAt         *time.Time  `json:"updated_at"`
+	LineItems         []*LineItem `json:"line_items"`
+	NotifyCustomer    bool        `json:"notify_customer,omitempty"`
 }
 
 // Receipt represents a Shopify receipt.
 type Receipt struct {
-	TestCase      bool   `json:"testcase,omitempty"`
-	Authorization string `json:"authorization,omitempty"`
+	TestCase      bool   `json:"testcase"`
+	Authorization string `json:"authorization"`
 }
 
 // FulfillmentResource represents the result from the fulfillments/X.json endpoint

@@ -23,23 +23,23 @@ type CustomerAddressServiceOp struct {
 
 // CustomerAddress represents a Shopify customer address
 type CustomerAddress struct {
-	ID           int64  `json:"id,omitempty"`
-	CustomerID   int64  `json:"customer_id,omitempty"`
-	FirstName    string `json:"first_name,omitempty"`
-	LastName     string `json:"last_name,omitempty"`
-	Company      string `json:"company,omitempty"`
-	Address1     string `json:"address1,omitempty"`
-	Address2     string `json:"address2,omitempty"`
-	City         string `json:"city,omitempty"`
-	Province     string `json:"province,omitempty"`
-	Country      string `json:"country,omitempty"`
-	Zip          string `json:"zip,omitempty"`
-	Phone        string `json:"phone,omitempty"`
-	Name         string `json:"name,omitempty"`
-	ProvinceCode string `json:"province_code,omitempty"`
-	CountryCode  string `json:"country_code,omitempty"`
-	CountryName  string `json:"country_name,omitempty"`
-	Default      bool   `json:"default,omitempty"`
+	ID           int64  `json:"id"`
+	CustomerID   int64  `json:"customer_id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	Company      string `json:"company"`
+	Address1     string `json:"address1"`
+	Address2     string `json:"address2"`
+	City         string `json:"city"`
+	Province     string `json:"province"`
+	Country      string `json:"country"`
+	Zip          string `json:"zip"`
+	Phone        string `json:"phone"`
+	Name         string `json:"name"`
+	ProvinceCode string `json:"province_code"`
+	CountryCode  string `json:"country_code"`
+	CountryName  string `json:"country_name"`
+	Default      bool   `json:"default"`
 }
 
 // CustomerAddressResoruce represents the result from the addresses/X.json endpoint

@@ -19,69 +19,69 @@ type ShippingZoneServiceOp struct {
 
 // ShippingZone represents a Shopify shipping zone
 type ShippingZone struct {
-	ID                           int64                         `json:"id,omitempty"`
-	Name                         string                        `json:"name,omitempty"`
-	ProfileID                    string                        `json:"profile_id,omitempty"`
-	LocationGroupID              string                        `json:"location_group_id,omitempty"`
-	AdminGraphqlAPIID            string                        `json:"admin_graphql_api_id,omitempty"`
-	Countries                    []ShippingCountry             `json:"countries,omitempty"`
-	WeightBasedShippingRates     []WeightBasedShippingRate     `json:"weight_based_shipping_rates,omitempty"`
-	PriceBasedShippingRates      []PriceBasedShippingRate      `json:"price_based_shipping_rates,omitempty"`
-	CarrierShippingRateProviders []CarrierShippingRateProvider `json:"carrier_shipping_rate_providers,omitempty"`
+	ID                           int64                          `json:"id"`
+	Name                         string                         `json:"name"`
+	ProfileID                    string                         `json:"profile_id"`
+	LocationGroupID              string                         `json:"location_group_id"`
+	AdminGraphqlAPIID            string                         `json:"admin_graphql_api_id"`
+	Countries                    []*ShippingCountry             `json:"countries"`
+	WeightBasedShippingRates     []*WeightBasedShippingRate     `json:"weight_based_shipping_rates"`
+	PriceBasedShippingRates      []*PriceBasedShippingRate      `json:"price_based_shipping_rates"`
+	CarrierShippingRateProviders []*CarrierShippingRateProvider `json:"carrier_shipping_rate_providers"`
 }
 
 // ShippingCountry represents a Shopify shipping country
 type ShippingCountry struct {
-	ID             int64              `json:"id,omitempty"`
-	ShippingZoneID int64              `json:"shipping_zone_id,omitempty"`
-	Name           string             `json:"name,omitempty"`
-	Tax            *decimal.Decimal   `json:"tax,omitempty"`
-	Code           string             `json:"code,omitempty"`
-	TaxName        string             `json:"tax_name,omitempty"`
-	Provinces      []ShippingProvince `json:"provinces,omitempty"`
+	ID             int64               `json:"id"`
+	Name           string              `json:"name"`
+	Tax            *decimal.Decimal    `json:"tax"`
+	Code           string              `json:"code"`
+	TaxName        string              `json:"tax_name"`
+	ShippingZoneID int64               `json:"shipping_zone_id"`
+	Provinces      []*ShippingProvince `json:"provinces"`
 }
 
 // ShippingProvince represents a Shopify shipping province
 type ShippingProvince struct {
-	ID             int64            `json:"id,omitempty"`
-	CountryID      int64            `json:"country_id,omitempty"`
-	ShippingZoneID int64            `json:"shipping_zone_id,omitempty"`
-	Name           string           `json:"name,omitempty"`
-	Code           string           `json:"code,omitempty"`
-	Tax            *decimal.Decimal `json:"tax,omitempty"`
-	TaxName        string           `json:"tax_name,omitempty"`
-	TaxType        string           `json:"tax_type,omitempty"`
-	TaxPercentage  *decimal.Decimal `json:"tax_percentage,omitempty"`
+	ID             int64            `json:"id"`
+	CountryID      int64            `json:"country_id"`
+	Name           string           `json:"name"`
+	Code           string           `json:"code"`
+	Tax            *decimal.Decimal `json:"tax"`
+	TaxName        string           `json:"tax_name"`
+	TaxType        string           `json:"tax_type"`
+	TaxPercentage  *decimal.Decimal `json:"tax_percentage"`
+	ShippingZoneID int64            `json:"shipping_zone_id"`
 }
 
 // WeightBasedShippingRate represents a Shopify weight-constrained shipping rate
 type WeightBasedShippingRate struct {
-	ID             int64            `json:"id,omitempty"`
-	ShippingZoneID int64            `json:"shipping_zone_id,omitempty"`
-	Name           string           `json:"name,omitempty"`
-	Price          *decimal.Decimal `json:"price,omitempty"`
-	WeightLow      *decimal.Decimal `json:"weight_low,omitempty"`
-	WeightHigh     *decimal.Decimal `json:"weight_high,omitempty"`
+	ID             int64            `json:"id"`
+	Name           string           `json:"name"`
+	Price          *decimal.Decimal `json:"price"`
+	ShippingZoneID int64            `json:"shipping_zone_id"`
+	WeightLow      *decimal.Decimal `json:"weight_low"`
+	WeightHigh     *decimal.Decimal `json:"weight_high"`
 }
 
 // PriceBasedShippingRate represents a Shopify subtotal-constrained shipping rate
 type PriceBasedShippingRate struct {
-	ID               int64            `json:"id,omitempty"`
-	ShippingZoneID   int64            `json:"shipping_zone_id,omitempty"`
-	Name             string           `json:"name,omitempty"`
-	Price            *decimal.Decimal `json:"price,omitempty"`
-	MinOrderSubtotal *decimal.Decimal `json:"min_order_subtotal,omitempty"`
-	MaxOrderSubtotal *decimal.Decimal `json:"max_order_subtotal,omitempty"`
+	ID               int64            `json:"id"`
+	Name             string           `json:"name"`
+	Price            *decimal.Decimal `json:"price"`
+	ShippingZoneID   int64            `json:"shipping_zone_id"`
+	MinOrderSubtotal *decimal.Decimal `json:"min_order_subtotal"`
+	MaxOrderSubtotal *decimal.Decimal `json:"max_order_subtotal"`
 }
 
 // CarrierShippingRateProvider represents a Shopify carrier-constrained shipping rate
 type CarrierShippingRateProvider struct {
-	ID               int64             `json:"id,omitempty"`
-	CarrierServiceID int64             `json:"carrier_service_id,omitempty"`
-	ShippingZoneID   int64             `json:"shipping_zone_id,omitempty"`
-	FlatModifier     *decimal.Decimal  `json:"flat_modifier,omitempty"`
-	PercentModifier  *decimal.Decimal  `json:"percent_modifier,omitempty"`
-	ServiceFilter    map[string]string `json:"service_filter,omitempty"`
+	ID               int64             `json:"id"`
+	CarrierServiceID int64             `json:"carrier_service_id"`
+	FlatModifier     *decimal.Decimal  `json:"flat_modifier"`
+	ServiceFilter    map[string]string `json:"service_filter"`
+	PercentModifier  *decimal.Decimal  `json:"percent_modifier"`
+	ShippingZoneID   int64             `json:"shipping_zone_id"`
 }
 
 // Represents the result from the shipping_zones.json endpoint

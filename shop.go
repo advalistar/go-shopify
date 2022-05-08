@@ -21,53 +21,59 @@ type ShopServiceOp struct {
 type Shop struct {
 	ID                              int64      `json:"id"`
 	Name                            string     `json:"name"`
-	ShopOwner                       string     `json:"shop_owner"`
 	Email                           string     `json:"email"`
-	CustomerEmail                   string     `json:"customer_email"`
+	Domain                          string     `json:"domain"`
+	Province                        string     `json:"province"`
+	Country                         string     `json:"country"`
+	Address1                        string     `json:"address1"`
+	Zip                             string     `json:"zip"`
+	City                            string     `json:"city"`
+	Source                          string     `json:"source"`
+	Phone                           string     `json:"phone"`
+	Latitude                        float64    `json:"latitude"`
+	Longitude                       float64    `json:"longitude"`
+	PrimaryLocale                   string     `json:"primary_locale"`
+	Address2                        string     `json:"address2"`
 	CreatedAt                       *time.Time `json:"created_at"`
 	UpdatedAt                       *time.Time `json:"updated_at"`
-	Address1                        string     `json:"address1"`
-	Address2                        string     `json:"address2"`
-	City                            string     `json:"city"`
-	Country                         string     `json:"country"`
 	CountryCode                     string     `json:"country_code"`
 	CountryName                     string     `json:"country_name"`
 	Currency                        string     `json:"currency"`
-	Domain                          string     `json:"domain"`
-	Latitude                        float64    `json:"latitude"`
-	Longitude                       float64    `json:"longitude"`
-	Phone                           string     `json:"phone"`
-	Province                        string     `json:"province"`
-	ProvinceCode                    string     `json:"province_code"`
-	Zip                             string     `json:"zip"`
+	CustomerEmail                   string     `json:"customer_email"`
+	Timezone                        string     `json:"timezone"`
+	IanaTimezone                    string     `json:"iana_timezone"`
+	ShopOwner                       string     `json:"shop_owner"`
 	MoneyFormat                     string     `json:"money_format"`
 	MoneyWithCurrencyFormat         string     `json:"money_with_currency_format"`
 	WeightUnit                      string     `json:"weight_unit"`
-	MyshopifyDomain                 string     `json:"myshopify_domain"`
-	PlanName                        string     `json:"plan_name"`
-	PlanDisplayName                 string     `json:"plan_display_name"`
-	PasswordEnabled                 bool       `json:"password_enabled"`
-	PrimaryLocale                   string     `json:"primary_locale"`
-	PrimaryLocationId               int64      `json:"primary_location_id"`
-	Timezone                        string     `json:"timezone"`
-	IanaTimezone                    string     `json:"iana_timezone"`
-	ForceSSL                        bool       `json:"force_ssl"`
-	TaxShipping                     bool       `json:"tax_shipping"`
+	ProvinceCode                    string     `json:"province_code"`
 	TaxesIncluded                   bool       `json:"taxes_included"`
-	HasStorefront                   bool       `json:"has_storefront"`
+	TaxShipping                     bool       `json:"tax_shipping"`
+	CountyTaxes                     bool       `json:"county_taxes"`
+	PlanDisplayName                 string     `json:"plan_display_name"`
+	PlanName                        string     `json:"plan_name"`
 	HasDiscounts                    bool       `json:"has_discounts"`
 	HasGiftcards                    bool       `json:"has_gift_cards"`
-	SetupRequire                    bool       `json:"setup_required"`
-	CountyTaxes                     bool       `json:"county_taxes"`
-	CheckoutAPISupported            bool       `json:"checkout_api_supported"`
-	Source                          string     `json:"source"`
+	MyshopifyDomain                 string     `json:"myshopify_domain"`
 	GoogleAppsDomain                string     `json:"google_apps_domain"`
 	GoogleAppsLoginEnabled          bool       `json:"google_apps_login_enabled"`
 	MoneyInEmailsFormat             string     `json:"money_in_emails_format"`
 	MoneyWithCurrencyInEmailsFormat string     `json:"money_with_currency_in_emails_format"`
 	EligibleForPayments             bool       `json:"eligible_for_payments"`
 	RequiresExtraPaymentsAgreement  bool       `json:"requires_extra_payments_agreement"`
+	PasswordEnabled                 bool       `json:"password_enabled"`
+	HasStorefront                   bool       `json:"has_storefront"`
+	EligibleForCardReaderGiveaway   bool       `json:"eligible_for_card_reader_giveaway"`
+	Finances                        bool       `json:"finances"`
+	PrimaryLocationID               int64      `json:"primary_location_id"`
+	CookieConsentLevel              string     `json:"cookie_consent_level"`
+	CheckoutAPISupported            bool       `json:"checkout_api_supported"`
+	MultiLocationEnabled            bool       `json:"multi_location_enabled"`
+	SetupRequire                    bool       `json:"setup_required"`
 	PreLaunchEnabled                bool       `json:"pre_launch_enabled"`
+	EnabledPresentmentCurrencies    []string   `json:"enabled_presentment_currencies"`
+	TransactionalSmsDisabled        bool       `json:"transactional_sms_disabled"`
+	ForceSSL                        bool       `json:"force_ssl,omitempty"`
 }
 
 // Represents the result from the admin/shop.json endpoint

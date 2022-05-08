@@ -9,7 +9,6 @@ import (
 )
 
 func collectTests(t *testing.T, collect Collect) {
-
 	// Test a few fields
 	cases := []struct {
 		field    string
@@ -19,7 +18,6 @@ func collectTests(t *testing.T, collect Collect) {
 		{"ID", 18091352323, collect.ID},
 		{"CollectionID", 241600835, collect.CollectionID},
 		{"ProductID", 6654094787, collect.ProductID},
-		{"Featured", false, collect.Featured},
 		{"SortValue", "0000000001", collect.SortValue},
 	}
 

@@ -6,8 +6,10 @@ import (
 	"time"
 )
 
-const productListingBasePath = "product_listings"
-const productsListingResourceName = "product_listings"
+const (
+	productListingBasePath      = "product_listings"
+	productsListingResourceName = "product_listings"
+)
 
 // ProductListingService is an interface for interfacing with the product listing endpoints
 // of the Shopify API.
@@ -30,19 +32,20 @@ type ProductListingServiceOp struct {
 
 // ProductListing represents a Shopify product published to your sales channel app
 type ProductListing struct {
-	ID          int64           `json:"product_id,omitempty"`
-	Title       string          `json:"title,omitempty"`
-	BodyHTML    string          `json:"body_html,omitempty"`
-	Vendor      string          `json:"vendor,omitempty"`
-	ProductType string          `json:"product_type,omitempty"`
-	Handle      string          `json:"handle,omitempty"`
-	CreatedAt   *time.Time      `json:"created_at,omitempty"`
-	UpdatedAt   *time.Time      `json:"updated_at,omitempty"`
-	PublishedAt *time.Time      `json:"published_at,omitempty"`
-	Tags        string          `json:"tags,omitempty"`
-	Options     []ProductOption `json:"options,omitempty"`
-	Variants    []Variant       `json:"variants,omitempty"`
-	Images      []Image         `json:"images,omitempty"`
+	ProductID   int64            `json:"product_id"`
+	CreatedAt   *time.Time       `json:"created_at"`
+	UpdatedAt   *time.Time       `json:"updated_at"`
+	BodyHTML    string           `json:"body_html"`
+	Handle      string           `json:"handle"`
+	ProductType string           `json:"product_type"`
+	Title       string           `json:"title"`
+	Vendor      string           `json:"vendor"`
+	Available   bool             `json:"available"`
+	Tags        string           `json:"tags"`
+	PublishedAt *time.Time       `json:"published_at"`
+	Variants    []*Variant       `json:"variants"`
+	Images      []*Image         `json:"images"`
+	Options     []*ProductOption `json:"options"`
 }
 
 // Represents the result from the product_listings/X.json endpoint

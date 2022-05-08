@@ -39,42 +39,44 @@ type DraftOrderServiceOp struct {
 
 // DraftOrder represents a shopify draft order
 type DraftOrder struct {
-	ID              int64            `json:"id,omitempty"`
-	OrderID         int64            `json:"order_id,omitempty"`
-	Name            string           `json:"name,omitempty"`
-	Customer        *Customer        `json:"customer,omitempty"`
-	ShippingAddress *Address         `json:"shipping_address,omitempty"`
-	BillingAddress  *Address         `json:"billing_address,omitempty"`
-	Note            string           `json:"note,omitempty"`
-	NoteAttributes  []NoteAttribute  `json:"note_attribute,omitempty"`
-	Email           string           `json:"email,omitempty"`
-	Currency        string           `json:"currency,omitempty"`
-	InvoiceSentAt   *time.Time       `json:"invoice_sent_at,omitempty"`
-	InvoiceURL      string           `json:"invoice_url,omitempty"`
-	LineItems       []LineItem       `json:"line_items,omitempty"`
-	ShippingLine    *ShippingLines   `json:"shipping_line,omitempty"`
-	Tags            string           `json:"tags,omitempty"`
-	TaxLines        []TaxLine        `json:"tax_lines,omitempty"`
-	AppliedDiscount *AppliedDiscount `json:"applied_discount,omitempty"`
-	TaxesIncluded   bool             `json:"taxes_included,omitempty"`
-	TotalTax        string           `json:"total_tax,omitempty"`
-	TotalPrice      string           `json:"total_price,omitempty"`
-	SubtotalPrice   *decimal.Decimal `json:"subtotal_price,omitempty"`
-	CompletedAt     *time.Time       `json:"completed_at,omitempty"`
-	CreatedAt       *time.Time       `json:"created_at,omitempty"`
-	UpdatedAt       *time.Time       `json:"updated_at,omitempty"`
-	Status          string           `json:"status,omitempty"`
-	// only in request to flag using the customer's default address
+	ID                int64            `json:"id"`
+	Note              string           `json:"note"`
+	Email             string           `json:"email"`
+	TaxesIncluded     bool             `json:"taxes_included"`
+	Currency          string           `json:"currency"`
+	InvoiceSentAt     *time.Time       `json:"invoice_sent_at"`
+	CreatedAt         *time.Time       `json:"created_at"`
+	UpdatedAt         *time.Time       `json:"updated_at"`
+	TaxExempt         bool             `json:"tax_exempt"`
+	CompletedAt       *time.Time       `json:"completed_at"`
+	Name              string           `json:"name"`
+	Status            string           `json:"status"`
+	LineItems         []*LineItem      `json:"line_items"`
+	ShippingAddress   *Address         `json:"shipping_address"`
+	BillingAddress    *Address         `json:"billing_address"`
+	InvoiceURL        string           `json:"invoice_url"`
+	AppliedDiscount   *AppliedDiscount `json:"applied_discount"`
+	OrderID           int64            `json:"order_id"`
+	ShippingLine      *ShippingLines   `json:"shipping_line"`
+	TaxLines          []*TaxLine       `json:"tax_lines"`
+	Tags              string           `json:"tags"`
+	NoteAttributes    []*NoteAttribute `json:"note_attribute"`
+	TotalPrice        string           `json:"total_price"`
+	SubtotalPrice     *decimal.Decimal `json:"subtotal_price"`
+	TotalTax          string           `json:"total_tax"`
+	AdminGraphqlAPIID string           `json:"admin_graphql_api_id"`
+	Customer          *Customer        `json:"customer"`
+
 	UseCustomerDefaultAddress bool `json:"use_customer_default_address,omitempty"`
 }
 
 // AppliedDiscount is the discount applied to the line item or the draft order object.
 type AppliedDiscount struct {
-	Title       string `json:"applied_discount,omitempty"`
-	Description string `json:"description,omitempty"`
-	Value       string `json:"value,omitempty"`
-	ValueType   string `json:"value_type,omitempty"`
-	Amount      string `json:"amount,omitempty"`
+	Title       string `json:"applied_discount"`
+	Description string `json:"description"`
+	Value       string `json:"value"`
+	ValueType   string `json:"value_type"`
+	Amount      string `json:"amount"`
 }
 
 // DraftOrderInvoice is the struct used to create an invoice for a draft order

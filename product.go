@@ -39,35 +39,32 @@ type ProductServiceOp struct {
 
 // Product represents a Shopify product
 type Product struct {
-	ID                             int64           `json:"id,omitempty"`
-	Title                          string          `json:"title,omitempty"`
-	BodyHTML                       string          `json:"body_html,omitempty"`
-	Vendor                         string          `json:"vendor,omitempty"`
-	ProductType                    string          `json:"product_type,omitempty"`
-	Handle                         string          `json:"handle,omitempty"`
-	CreatedAt                      *time.Time      `json:"created_at,omitempty"`
-	UpdatedAt                      *time.Time      `json:"updated_at,omitempty"`
-	PublishedAt                    *time.Time      `json:"published_at,omitempty"`
-	PublishedScope                 string          `json:"published_scope,omitempty"`
-	Tags                           string          `json:"tags,omitempty"`
-	Options                        []ProductOption `json:"options,omitempty"`
-	Variants                       []Variant       `json:"variants,omitempty"`
-	Image                          Image           `json:"image,omitempty"`
-	Images                         []Image         `json:"images,omitempty"`
-	TemplateSuffix                 string          `json:"template_suffix,omitempty"`
-	MetafieldsGlobalTitleTag       string          `json:"metafields_global_title_tag,omitempty"`
-	MetafieldsGlobalDescriptionTag string          `json:"metafields_global_description_tag,omitempty"`
-	Metafields                     []Metafield     `json:"metafields,omitempty"`
-	AdminGraphqlAPIID              string          `json:"admin_graphql_api_id,omitempty"`
+	ID                int64            `json:"id"`
+	Title             string           `json:"title"`
+	BodyHTML          string           `json:"body_html"`
+	Vendor            string           `json:"vendor"`
+	ProductType       string           `json:"product_type"`
+	CreatedAt         *time.Time       `json:"created_at"`
+	Handle            string           `json:"handle"`
+	UpdatedAt         *time.Time       `json:"updated_at"`
+	PublishedAt       *time.Time       `json:"published_at"`
+	TemplateSuffix    string           `json:"template_suffix"`
+	PublishedScope    string           `json:"published_scope"`
+	Tags              string           `json:"tags"`
+	AdminGraphqlAPIID string           `json:"admin_graphql_api_id"`
+	Variants          []*Variant       `json:"variants"`
+	Options           []*ProductOption `json:"options"`
+	Image             *Image           `json:"image"`
+	Images            []*Image         `json:"images"`
 }
 
 // The options provided by Shopify
 type ProductOption struct {
-	ID        int64    `json:"id,omitempty"`
-	ProductID int64    `json:"product_id,omitempty"`
-	Name      string   `json:"name,omitempty"`
-	Position  int      `json:"position,omitempty"`
-	Values    []string `json:"values,omitempty"`
+	ID        int64    `json:"id"`
+	Name      string   `json:"name"`
+	ProductID int64    `json:"product_id"`
+	Position  int      `json:"position"`
+	Values    []string `json:"values"`
 }
 
 type ProductListOptions struct {

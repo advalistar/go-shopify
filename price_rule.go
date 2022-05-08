@@ -27,34 +27,35 @@ type PriceRuleServiceOp struct {
 
 // PriceRule represents a Shopify discount rule
 type PriceRule struct {
-	ID                                     int64                                   `json:"id,omitempty"`
-	Title                                  string                                  `json:"title,omitempty"`
-	ValueType                              string                                  `json:"value_type,omitempty"`
-	Value                                  *decimal.Decimal                        `json:"value,omitempty"`
-	CustomerSelection                      string                                  `json:"customer_selection,omitempty"`
-	TargetType                             string                                  `json:"target_type,omitempty"`
-	TargetSelection                        string                                  `json:"target_selection,omitempty"`
-	AllocationMethod                       string                                  `json:"allocation_method,omitempty"`
-	AllocationLimit                        string                                  `json:"allocation_limit,omitempty"`
-	OncePerCustomer                        bool                                    `json:"once_per_customer,omitempty"`
-	UsageLimit                             int                                     `json:"usage_limit,omitempty"`
-	StartsAt                               *time.Time                              `json:"starts_at,omitempty"`
-	EndsAt                                 *time.Time                              `json:"ends_at,omitempty"`
-	CreatedAt                              *time.Time                              `json:"created_at,omitempty"`
-	UpdatedAt                              *time.Time                              `json:"updated_at,omitempty"`
-	EntitledProductIds                     []int64                                 `json:"entitled_product_ids,omitempty"`
-	EntitledVariantIds                     []int64                                 `json:"entitled_variant_ids,omitempty"`
-	EntitledCollectionIds                  []int64                                 `json:"entitled_collection_ids,omitempty"`
-	EntitledCountryIds                     []int64                                 `json:"entitled_country_ids,omitempty"`
-	PrerequisiteProductIds                 []int64                                 `json:"prerequisite_product_ids,omitempty"`
-	PrerequisiteVariantIds                 []int64                                 `json:"prerequisite_variant_ids,omitempty"`
-	PrerequisiteCollectionIds              []int64                                 `json:"prerequisite_collection_ids,omitempty"`
-	PrerequisiteSavedSearchIds             []int64                                 `json:"prerequisite_saved_search_ids,omitempty"`
-	PrerequisiteCustomerIds                []int64                                 `json:"prerequisite_customer_ids,omitempty"`
-	PrerequisiteSubtotalRange              *prerequisiteSubtotalRange              `json:"prerequisite_subtotal_range,omitempty"`
-	PrerequisiteQuantityRange              *prerequisiteQuantityRange              `json:"prerequisite_quantity_range,omitempty"`
-	PrerequisiteShippingPriceRange         *prerequisiteShippingPriceRange         `json:"prerequisite_shipping_price_range,omitempty"`
-	PrerequisiteToEntitlementQuantityRatio *prerequisiteToEntitlementQuantityRatio `json:"prerequisite_to_entitlement_quantity_ratio,omitempty"`
+	ID                                     int64                                   `json:"id"`
+	ValueType                              string                                  `json:"value_type"`
+	Value                                  *decimal.Decimal                        `json:"value"`
+	CustomerSelection                      string                                  `json:"customer_selection"`
+	TargetType                             string                                  `json:"target_type"`
+	TargetSelection                        string                                  `json:"target_selection"`
+	AllocationMethod                       string                                  `json:"allocation_method"`
+	AllocationLimit                        string                                  `json:"allocation_limit"`
+	OncePerCustomer                        bool                                    `json:"once_per_customer"`
+	UsageLimit                             int                                     `json:"usage_limit"`
+	StartsAt                               *time.Time                              `json:"starts_at"`
+	EndsAt                                 *time.Time                              `json:"ends_at"`
+	CreatedAt                              *time.Time                              `json:"created_at"`
+	UpdatedAt                              *time.Time                              `json:"updated_at"`
+	EntitledProductIDs                     []int64                                 `json:"entitled_product_ids"`
+	EntitledVariantIDs                     []int64                                 `json:"entitled_variant_ids"`
+	EntitledCollectionIDs                  []int64                                 `json:"entitled_collection_ids"`
+	EntitledCountryIDs                     []int64                                 `json:"entitled_country_ids"`
+	PrerequisiteProductIDs                 []int64                                 `json:"prerequisite_product_ids"`
+	PrerequisiteVariantIDs                 []int64                                 `json:"prerequisite_variant_ids"`
+	PrerequisiteCollectionIDs              []int64                                 `json:"prerequisite_collection_ids"`
+	PrerequisiteSavedSearchIDs             []int64                                 `json:"prerequisite_saved_search_ids"`
+	PrerequisiteCustomerIDs                []int64                                 `json:"prerequisite_customer_ids"`
+	PrerequisiteSubtotalRange              *prerequisiteSubtotalRange              `json:"prerequisite_subtotal_range"`
+	PrerequisiteQuantityRange              *prerequisiteQuantityRange              `json:"prerequisite_quantity_range"`
+	PrerequisiteShippingPriceRange         *prerequisiteShippingPriceRange         `json:"prerequisite_shipping_price_range"`
+	PrerequisiteToEntitlementQuantityRatio *prerequisiteToEntitlementQuantityRatio `json:"prerequisite_to_entitlement_quantity_ratio"`
+	Title                                  string                                  `json:"title"`
+	AdminGraphqlAPIID                      string                                  `json:"admin_graphql_api_id"`
 }
 
 type prerequisiteSubtotalRange struct {
@@ -147,7 +148,7 @@ func (pr *PriceRule) SetPrerequisiteToEntitlementQuantityRatio(prerequisiteQuant
 
 	pr.PrerequisiteToEntitlementQuantityRatio = &prerequisiteToEntitlementQuantityRatio{
 		PrerequisiteQuantity: pQuant,
-		EntitledQuantity: eQuant,
+		EntitledQuantity:     eQuant,
 	}
 }
 

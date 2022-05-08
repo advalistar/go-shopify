@@ -25,14 +25,13 @@ type CollectServiceOp struct {
 
 // Collect represents a Shopify collect
 type Collect struct {
-	ID           int64      `json:"id,omitempty"`
-	CollectionID int64      `json:"collection_id,omitempty"`
-	ProductID    int64      `json:"product_id,omitempty"`
-	Featured     bool       `json:"featured,omitempty"`
-	CreatedAt    *time.Time `json:"created_at,omitempty"`
-	UpdatedAt    *time.Time `json:"updated_at,omitempty"`
-	Position     int        `json:"position,omitempty"`
-	SortValue    string     `json:"sort_value,omitempty"`
+	ID           int64      `json:"id"`
+	CollectionID int64      `json:"collection_id"`
+	ProductID    int64      `json:"product_id"`
+	CreatedAt    *time.Time `json:"created_at"`
+	UpdatedAt    *time.Time `json:"updated_at"`
+	Position     int        `json:"position"`
+	SortValue    string     `json:"sort_value"`
 }
 
 // Represents the result from the collects/X.json endpoint

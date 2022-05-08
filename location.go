@@ -20,58 +20,25 @@ type LocationService interface {
 }
 
 type Location struct {
-	// Whether the location is active.If true, then the location can be used to sell products,
-	// stock inventory, and fulfill orders.Merchants can deactivate locations from the Shopify admin.
-	// Deactivated locations don't contribute to the shop's location limit.
-	Active bool `json:"active"`
-
-	// The first line of the address.
-	Address1 string `json:"address1"`
-
-	// The second line of the address.
-	Address2 string `json:"address2"`
-
-	// The city the location is in.
-	City string `json:"city"`
-
-	// The country the location is in.
-	Country string `json:"country"`
-
-	// The two-letter code (ISO 3166-1 alpha-2 format) corresponding to country the location is in.
-	CountryCode string `json:"country_code"`
-
-	CountryName string `json:"country_name"`
-
-	// The date and time (ISO 8601 format) when the location was created.
-	CreatedAt time.Time `json:"created_at"`
-
-	// The ID for the location.
-	ID int64 `json:"id"`
-
-	// Whether this is a fulfillment service location.
-	// If true, then the location is a fulfillment service location.
-	// If false, then the location was created by the merchant and isn't tied to a fulfillment service.
-	Legacy bool `json:"legacy"`
-
-	// The name of the location.
-	Name string `json:"name"`
-
-	// The phone number of the location.This value can contain special characters like - and +.
-	Phone string `json:"phone"`
-
-	// The province the location is in.
-	Province string `json:"province"`
-
-	// The two-letter code corresponding to province or state the location is in.
-	ProvinceCode string `json:"province_code"`
-
-	// The date and time (ISO 8601 format) when the location was last updated.
-	UpdatedAt time.Time `json:"updated_at"`
-
-	// The zip or postal code.
-	Zip string `json:"zip"`
-
-	AdminGraphqlAPIID string `json:"admin_graphql_api_id"`
+	ID                    int64     `json:"id"`
+	Name                  string    `json:"name"`
+	Address1              string    `json:"address1"`
+	Address2              string    `json:"address2"`
+	City                  string    `json:"city"`
+	Zip                   string    `json:"zip"`
+	Province              string    `json:"province"`
+	Country               string    `json:"country"`
+	Phone                 string    `json:"phone"`
+	CreatedAt             time.Time `json:"created_at"`
+	UpdatedAt             time.Time `json:"updated_at"`
+	CountryCode           string    `json:"country_code"`
+	CountryName           string    `json:"country_name"`
+	ProvinceCode          string    `json:"province_code"`
+	Legacy                bool      `json:"legacy"`
+	Active                bool      `json:"active"`
+	AdminGraphqlAPIID     string    `json:"admin_graphql_api_id"`
+	LocalizedCountryName  string    `json:"localized_country_name"`
+	LocalizedProvinceName string    `json:"localized_province_name"`
 }
 
 // LocationServiceOp handles communication with the location related methods of

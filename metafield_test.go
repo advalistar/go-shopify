@@ -93,7 +93,7 @@ func TestMetafieldGet(t *testing.T) {
 		Type:              "single_line_text_field",
 		Namespace:         "affiliates",
 		Description:       "some amaaazing app's value",
-		OwnerId:           1,
+		OwnerID:           1,
 		CreatedAt:         &createdAt,
 		UpdatedAt:         &updatedAt,
 		OwnerResource:     "shop",

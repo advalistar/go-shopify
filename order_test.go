@@ -291,35 +291,6 @@ func TestOrderGet(t *testing.T) {
 	orderTests(t, *order)
 }
 
-func TestOrderGetWithTransactions(t *testing.T) {
-	setup()
-	defer teardown()
-
-	httpmock.RegisterResponder("GET", fmt.Sprintf("https://fooshop.myshopify.com/%s/orders/123456.json", client.pathPrefix),
-		httpmock.NewBytesResponder(200, loadFixture("order_with_transaction.json")))
-
-	options := struct {
-		ApiFeatures string `url:"_apiFeatures"`
-	}{"include-transactions"}
-
-	order, err := client.Order.Get(123456, options)
-	if err != nil {
-		t.Errorf("Order.List returned error: %v", err)
-	}
-
-	orderTests(t, *order)
-
-	// Check transactions is not nil
-	if order.Transactions == nil {
-		t.Error("Expected Transactions to not be nil")
-	}
-	if len(order.Transactions) != 1 {
-		t.Errorf("Expected Transactions to have 1 transaction but received %v", len(order.Transactions))
-	}
-
-	transactionTest(t, order.Transactions[0])
-}
-
 func TestOrderCount(t *testing.T) {
 	setup()
 	defer teardown()
@@ -364,8 +335,8 @@ func TestOrderCreate(t *testing.T) {
 		httpmock.NewStringResponder(201, `{"order":{"id": 1}}`))
 
 	order := Order{
-		LineItems: []LineItem{
-			LineItem{
+		LineItems: []*LineItem{
+			{
 				VariantID: 1,
 				Quantity:  1,
 			},
@@ -1072,7 +1043,7 @@ func testLineItem(t *testing.T, expected, actual LineItem) {
 	}
 }
 
-func testProperties(t *testing.T, expected, actual []NoteAttribute) {
+func testProperties(t *testing.T, expected, actual []*NoteAttribute) {
 	if len(expected) != len(actual) {
 		t.Errorf("LineItem.Properties expected len (%d) actual (%d)", len(expected), len(actual))
 	} else {
@@ -1088,7 +1059,7 @@ func testProperties(t *testing.T, expected, actual []NoteAttribute) {
 	}
 }
 
-func testTaxLines(t *testing.T, expected, actual []TaxLine) {
+func testTaxLines(t *testing.T, expected, actual []*TaxLine) {
 	if len(expected) != len(actual) {
 		t.Errorf("LineItem.TaxLines expected len (%d) actual (%d)", len(expected), len(actual))
 	} else {
@@ -1150,14 +1121,14 @@ func testShippingLines(t *testing.T, expected, actual ShippingLines) {
 
 func propertiesEmptyStructLientItem() LineItem {
 	return LineItem{
-		Properties: []NoteAttribute{},
+		Properties: []*NoteAttribute{},
 	}
 }
 
 func propertiesStructLientItem() LineItem {
 	return LineItem{
-		Properties: []NoteAttribute{
-			NoteAttribute{
+		Properties: []*NoteAttribute{
+			{
 				Name:  "property 1",
 				Value: float64(3),
 			},
@@ -1192,12 +1163,12 @@ func validLineItem() LineItem {
 		RequiresShipping:           true,
 		VariantInventoryManagement: "shopify",
 		PreTaxPrice:                &preTaxPrice,
-		Properties: []NoteAttribute{
-			NoteAttribute{
+		Properties: []*NoteAttribute{
+			{
 				Name:  "note 1",
 				Value: "one",
 			},
-			NoteAttribute{
+			{
 				Name:  "note 2",
 				Value: float64(2),
 			},
@@ -1206,13 +1177,13 @@ func validLineItem() LineItem {
 		FulfillableQuantity: 1,
 		Grams:               100,
 		FulfillmentStatus:   "partial",
-		TaxLines: []TaxLine{
-			TaxLine{
+		TaxLines: []*TaxLine{
+			{
 				Title: "State tax",
 				Price: &tl1Price,
 				Rate:  &tl1Rate,
 			},
-			TaxLine{
+			{
 				Title: "Federal tax",
 				Price: &tl2Price,
 				Rate:  &tl2Rate,
@@ -1261,15 +1232,15 @@ func validLineItem() LineItem {
 			ValueType:   "percent",
 			Amount:      "25.00",
 		},
-		DiscountAllocations: []DiscountAllocations{
+		DiscountAllocations: []*DiscountAllocations{
 			{
 				Amount: &discountAllocationAmount,
-				AmountSet: AmountSet{
-					ShopMoney: AmountSetEntry{
+				AmountSet: &AmountSet{
+					ShopMoney: &AmountSetEntry{
 						Amount:       &discountAllocationAmount,
 						CurrencyCode: "EUR",
 					},
-					PresentmentMoney: AmountSetEntry{
+					PresentmentMoney: &AmountSetEntry{
 						Amount:       &discountAllocationAmount,
 						CurrencyCode: "EUR",
 					},
@@ -1296,7 +1267,7 @@ func validShippingLines() ShippingLines {
 		RequestedFulfillmentServiceID: "third_party_fulfillment_service_id",
 		DeliveryCategory:              "",
 		CarrierIdentifier:             "third_party_carrier_identifier",
-		TaxLines: []TaxLine{
+		TaxLines: []*TaxLine{
 			{
 				Title: "State tax",
 				Price: &tl1Price,
