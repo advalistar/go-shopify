@@ -20,13 +20,13 @@ This library has been tested against the following versions of Go
 ## Install
 
 ```console
-$ go get github.com/bold-commerce/go-shopify
+$ go get github.com/advalistar/go-shopify
 ```
 
 ## Use
 
 ```go
-import "github.com/bold-commerce/go-shopify"
+import "github.com/advalistar/go-shopify"
 ```
 
 This gives you access to the `goshopify` package.
@@ -109,13 +109,13 @@ client := goshopify.NewClient(app, "shopname", "")
 numProducts, err := client.Product.Count(nil)
 ```
 ### Client Options
-When creating a client there are configuration options you can pass to NewClient. Simply use the last variadic param and 
+When creating a client there are configuration options you can pass to NewClient. Simply use the last variadic param and
 pass in the built in options or create your own and manipulate the client. See [options.go](https://github.com/bold-commerce/go-shopify/blob/master/options.go)
 for more details.
 
 #### WithVersion
 Read more details on the [Shopify API Versioning](https://shopify.dev/concepts/about-apis/versioning)
-to understand the format and release schedules. You can use `WithVersion` to specify a specific version 
+to understand the format and release schedules. You can use `WithVersion` to specify a specific version
 of the API. If you do not use this option you will be defaulted to the oldest stable API.
 
 ```go
@@ -123,9 +123,9 @@ client := goshopify.NewClient(app, "shopname", "", goshopify.WithVersion("2019-0
 ```
 
 #### WithRetry
-Shopify [Rate Limits](https://shopify.dev/concepts/about-apis/rate-limits) their API and if this happens to you they 
-will send a back off (usually 2s) to tell you to retry your request. To support this functionality seamlessly within 
-the client a `WithRetry` option exists where you can pass an `int` of how many times you wish to retry per-request 
+Shopify [Rate Limits](https://shopify.dev/concepts/about-apis/rate-limits) their API and if this happens to you they
+will send a back off (usually 2s) to tell you to retry your request. To support this functionality seamlessly within
+the client a `WithRetry` option exists where you can pass an `int` of how many times you wish to retry per-request
 before returning an error. `WithRetry` additionally supports retrying HTTP503 errors.
 
 ```go
