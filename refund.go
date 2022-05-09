@@ -11,7 +11,7 @@ import (
 const refundBasePath = "orders/%d/refund"
 
 type RefundService interface {
-	List(int64) ([]Refund, error)
+	List(int64, interface{}) ([]Refund, error)
 	ListWithPagination(int64, interface{}) ([]Refund, *Pagination, error)
 }
 
@@ -57,10 +57,10 @@ type RefundsResource struct {
 }
 
 // List of discount codes
-func (s *RefundServiceOp) List(orderID int64) ([]Refund, error) {
+func (s *RefundServiceOp) List(orderID int64, options interface{}) ([]Refund, error) {
 	path := fmt.Sprintf(refundBasePath+".json", orderID)
 	resource := new(RefundsResource)
-	err := s.client.Get(path, resource, nil)
+	err := s.client.Get(path, resource, options)
 	return resource.Refunds, err
 }
 
