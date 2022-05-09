@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -12,6 +13,7 @@ const blogsBasePath = "blogs"
 // See: https://help.shopify.com/api/reference/online_store/blog
 type BlogService interface {
 	List(interface{}) ([]Blog, error)
+	ListWithPagination(interface{}) ([]Blog, *Pagination, error)
 	Count(interface{}) (int, error)
 	Get(int64, interface{}) (*Blog, error)
 	Create(Blog) (*Blog, error)
@@ -28,16 +30,16 @@ type BlogServiceOp struct {
 // Blog represents a Shopify blog
 type Blog struct {
 	ID                 int64      `json:"id"`
+	Handle             string     `json:"handle"`
 	Title              string     `json:"title"`
+	UpdatedAt          *time.Time `json:"updated_at"`
 	Commentable        string     `json:"commentable"`
 	Feedburner         string     `json:"feedburner"`
 	FeedburnerLocation string     `json:"feedburner_location"`
-	Handle             string     `json:"handle"`
-	Metafield          Metafield  `json:"metafield"`
-	Tags               string     `json:"tags"`
-	TemplateSuffix     string     `json:"template_suffix"`
 	CreatedAt          *time.Time `json:"created_at"`
-	UpdatedAt          *time.Time `json:"updated_at"`
+	TemplateSuffix     string     `json:"template_suffix"`
+	Tags               string     `json:"tags"`
+	AdminGraphqlAPIID  string     `json:"admin_graphql_api_id"`
 }
 
 // BlogsResource is the result from the blogs.json endpoint
@@ -56,6 +58,27 @@ func (s *BlogServiceOp) List(options interface{}) ([]Blog, error) {
 	resource := new(BlogsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Blogs, err
+}
+
+func (s *BlogServiceOp) ListWithPagination(options interface{}) ([]Blog, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", blogsBasePath)
+	resource := new(BlogsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.Blogs, pagination, nil
 }
 
 // Count blogs
