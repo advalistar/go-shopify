@@ -22,17 +22,17 @@ type EventServiceOp struct {
 }
 
 type Event struct {
-	ID           int64      `json:"id"`
-	SubjectID    int64      `json:"subject_id"`
-	CreatedAt    *time.Time `json:"created_at"`
-	Subject_type string     `json:"subject_type"`
-	Verb         string     `json:"verb"`
-	Arguments    []string   `json:"arguments"`
-	Body         string     `json:"body"`
-	Message      string     `json:"message"`
-	Author       string     `json:"author"`
-	Description  string     `json:"description"`
-	Path         string     `json:"path"`
+	ID           int64         `json:"id"`
+	SubjectID    int64         `json:"subject_id"`
+	CreatedAt    *time.Time    `json:"created_at"`
+	Subject_type string        `json:"subject_type"`
+	Verb         string        `json:"verb"`
+	Arguments    []interface{} `json:"arguments"`
+	Body         string        `json:"body"`
+	Message      string        `json:"message"`
+	Author       string        `json:"author"`
+	Description  string        `json:"description"`
+	Path         string        `json:"path"`
 }
 
 // EventResource represents the result from the
