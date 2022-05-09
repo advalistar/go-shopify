@@ -384,39 +384,6 @@ type ClientDetails struct {
 	UserAgent      string `json:"user_agent"`
 }
 
-type Refund struct {
-	ID                int64             `json:"id"`
-	AdminGraphqlAPIID string            `json:"admin_graphql_api_id"`
-	CreatedAt         *time.Time        `json:"created_at"`
-	Note              string            `json:"note"`
-	OrderID           int64             `json:"order_id"`
-	ProcessedAt       *time.Time        `json:"processed_at"`
-	Restock           bool              `json:"restock"`
-	UserID            int64             `json:"user_id"`
-	OrderAdjustments  *OrderAdjustments `json:"order_adjustments"`
-	Transactions      []*Transaction    `json:"transactions"`
-	RefundLineItems   []*RefundLineItem `json:"refund_line_items"`
-}
-
-type OrderAdjustments struct {
-	ID       int64 `json:"id"`
-	OrderID  int64 `json:"order_id"`
-	RefundID int64 `json:"refund_id"`
-}
-
-type RefundLineItem struct {
-	ID          int64            `json:"id"`
-	LineItemID  int64            `json:"line_item_id"`
-	LocationID  int64            `json:"location_id"`
-	Quantity    int              `json:"quantity"`
-	RestockType string           `json:"restock_type"`
-	Subtotal    *decimal.Decimal `json:"subtotal"`
-	SubtotalSet *AmountSet       `json:"subtotal_set"`
-	TotalTax    *decimal.Decimal `json:"total_tax"`
-	TotalTaxSet *AmountSet       `json:"total_tax_set"`
-	LineItem    *LineItem        `json:"line_item"`
-}
-
 // List orders
 func (s *OrderServiceOp) List(options interface{}) ([]Order, error) {
 	orders, _, err := s.ListWithPagination(options)
