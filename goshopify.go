@@ -87,6 +87,7 @@ type Client struct {
 	Customer                   CustomerService
 	CustomerAddress            CustomerAddressService
 	Order                      OrderService
+	OrderRisk                  OrderRiskService
 	Fulfillment                FulfillmentService
 	DraftOrder                 DraftOrderService
 	Shop                       ShopService
@@ -341,6 +342,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Customer = &CustomerServiceOp{client: c}
 	c.CustomerAddress = &CustomerAddressServiceOp{client: c}
 	c.Order = &OrderServiceOp{client: c}
+	c.OrderRisk = &OrderRiskServiceOp{client: c}
 	c.Fulfillment = &FulfillmentServiceOp{client: c}
 	c.DraftOrder = &DraftOrderServiceOp{client: c}
 	c.Shop = &ShopServiceOp{client: c}
