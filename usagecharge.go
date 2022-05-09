@@ -27,14 +27,14 @@ type UsageChargeServiceOp struct {
 
 // UsageCharge represents a Shopify UsageCharge.
 type UsageCharge struct {
-	BalanceRemaining *decimal.Decimal `json:"balance_remaining,omitempty"`
-	BalanceUsed      *decimal.Decimal `json:"balance_used,omitempty"`
-	BillingOn        *time.Time       `json:"billing_on,omitempty"`
-	CreatedAt        *time.Time       `json:"created_at,omitempty"`
-	Description      string           `json:"description,omitempty"`
-	ID               int64            `json:"id,omitempty"`
-	Price            *decimal.Decimal `json:"price,omitempty"`
-	RiskLevel        *decimal.Decimal `json:"risk_level,omitempty"`
+	ID               int64            `json:"id"`
+	Description      string           `json:"description"`
+	Price            *decimal.Decimal `json:"price"`
+	CreatedAt        *time.Time       `json:"created_at"`
+	BillingOn        *time.Time       `json:"billing_on"`
+	BalanceUsed      *decimal.Decimal `json:"balance_used"`
+	BalanceRemaining *decimal.Decimal `json:"balance_remaining"`
+	RiskLevel        *decimal.Decimal `json:"risk_level"`
 }
 
 func (r *UsageCharge) UnmarshalJSON(data []byte) error {
@@ -70,9 +70,7 @@ type UsageChargesResource struct {
 }
 
 // Create creates new usage charge given a recurring charge. *required fields: price and description
-func (r *UsageChargeServiceOp) Create(chargeID int64, usageCharge UsageCharge) (
-	*UsageCharge, error) {
-
+func (r *UsageChargeServiceOp) Create(chargeID int64, usageCharge UsageCharge) (*UsageCharge, error) {
 	path := fmt.Sprintf("%s/%d/%s.json", recurringApplicationChargesBasePath, chargeID, usageChargesPath)
 	wrappedData := UsageChargeResource{Charge: &usageCharge}
 	resource := &UsageChargeResource{}
@@ -81,9 +79,7 @@ func (r *UsageChargeServiceOp) Create(chargeID int64, usageCharge UsageCharge) (
 }
 
 // Get gets individual usage charge.
-func (r *UsageChargeServiceOp) Get(chargeID int64, usageChargeID int64, options interface{}) (
-	*UsageCharge, error) {
-
+func (r *UsageChargeServiceOp) Get(chargeID int64, usageChargeID int64, options interface{}) (*UsageCharge, error) {
 	path := fmt.Sprintf("%s/%d/%s/%d.json", recurringApplicationChargesBasePath, chargeID, usageChargesPath, usageChargeID)
 	resource := &UsageChargeResource{}
 	err := r.client.Get(path, resource, options)
@@ -91,9 +87,7 @@ func (r *UsageChargeServiceOp) Get(chargeID int64, usageChargeID int64, options 
 }
 
 // List gets all usage charges associated with the recurring charge.
-func (r *UsageChargeServiceOp) List(chargeID int64, options interface{}) (
-	[]UsageCharge, error) {
-
+func (r *UsageChargeServiceOp) List(chargeID int64, options interface{}) ([]UsageCharge, error) {
 	path := fmt.Sprintf("%s/%d/%s.json", recurringApplicationChargesBasePath, chargeID, usageChargesPath)
 	resource := &UsageChargesResource{}
 	err := r.client.Get(path, resource, options)
