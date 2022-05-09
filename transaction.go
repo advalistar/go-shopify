@@ -1,12 +1,19 @@
 package goshopify
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/shopspring/decimal"
+)
 
 // TransactionService is an interface for interfacing with the transactions endpoints of
 // the Shopify API.
 // See: https://help.shopify.com/api/reference/transaction
 type TransactionService interface {
 	List(int64, interface{}) ([]Transaction, error)
+	ListWithPagination(int64, interface{}) ([]Transaction, *Pagination, error)
 	Count(int64, interface{}) (int, error)
 	Get(int64, int64, interface{}) (*Transaction, error)
 	Create(int64, Transaction) (*Transaction, error)
@@ -16,6 +23,31 @@ type TransactionService interface {
 // Shopify API.
 type TransactionServiceOp struct {
 	client *Client
+}
+
+type Transaction struct {
+	ID                int64            `json:"id"`
+	AdminGraphqlAPIID string           `json:"admin_graphql_api_id"`
+	Amount            *decimal.Decimal `json:"amount"`
+	Authorization     string           `json:"authorization"`
+	CreatedAt         *time.Time       `json:"created_at"`
+	Currency          string           `json:"currency"`
+	DeviceID          *int64           `json:"device_id"`
+	ErrorCode         string           `json:"error_code"`
+	Gateway           string           `json:"gateway"`
+	Kind              string           `json:"kind"`
+	LocationID        *int64           `json:"location_id"`
+	Message           string           `json:"message"`
+	OrderID           int64            `json:"order_id"`
+	ParentID          *int64           `json:"parent_id"`
+	ProcessedAt       *time.Time       `json:"processed_at"`
+	Receipt           *Receipt         `json:"receipt"`
+	SourceName        string           `json:"source_name"`
+	Status            string           `json:"status"`
+	Test              bool             `json:"test"`
+	UserID            *int64           `json:"user_id"`
+
+	PaymentDetails *PaymentDetails `json:"payment_details,omitempty"`
 }
 
 // TransactionResource represents the result from the orders/X/transactions/Y.json endpoint
@@ -34,6 +66,27 @@ func (s *TransactionServiceOp) List(orderID int64, options interface{}) ([]Trans
 	resource := new(TransactionsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Transactions, err
+}
+
+func (s *TransactionServiceOp) ListWithPagination(orderID int64, options interface{}) ([]Transaction, *Pagination, error) {
+	path := fmt.Sprintf("%s/%d/transactions.json", ordersBasePath, orderID)
+	resource := new(TransactionsResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.Transactions, pagination, nil
 }
 
 // Count transactions

@@ -350,31 +350,6 @@ type TaxLine struct {
 	PriceSet *AmountSet       `json:"price_set"`
 }
 
-type Transaction struct {
-	ID                int64            `json:"id"`
-	AdminGraphqlAPIID string           `json:"admin_graphql_api_id"`
-	Amount            *decimal.Decimal `json:"amount"`
-	Authorization     string           `json:"authorization"`
-	CreatedAt         *time.Time       `json:"created_at"`
-	Currency          string           `json:"currency"`
-	DeviceID          *int64           `json:"device_id"`
-	ErrorCode         string           `json:"error_code"`
-	Gateway           string           `json:"gateway"`
-	Kind              string           `json:"kind"`
-	LocationID        *int64           `json:"location_id"`
-	Message           string           `json:"message"`
-	OrderID           int64            `json:"order_id"`
-	ParentID          *int64           `json:"parent_id"`
-	ProcessedAt       *time.Time       `json:"processed_at"`
-	Receipt           *Receipt         `json:"receipt"`
-	SourceName        string           `json:"source_name"`
-	Status            string           `json:"status"`
-	Test              bool             `json:"test"`
-	UserID            *int64           `json:"user_id"`
-
-	PaymentDetails *PaymentDetails `json:"payment_details,omitempty"`
-}
-
 type ClientDetails struct {
 	AcceptLanguage string `json:"accept_language"`
 	BrowserHeight  int    `json:"browser_height"`
