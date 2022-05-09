@@ -2,17 +2,21 @@ package goshopify
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
-const pagesBasePath = "pages"
-const pagesResourceName = "pages"
+const (
+	pagesBasePath     = "pages"
+	pagesResourceName = "pages"
+)
 
 // PagesPageService is an interface for interacting with the pages
 // endpoints of the Shopify API.
 // See https://help.shopify.com/api/reference/online_store/page
 type PageService interface {
 	List(interface{}) ([]Page, error)
+	ListWithPagination(interface{}) ([]Page, *Pagination, error)
 	Count(interface{}) (int, error)
 	Get(int64, interface{}) (*Page, error)
 	Create(Page) (*Page, error)
@@ -32,17 +36,19 @@ type PageServiceOp struct {
 
 // Page represents a Shopify page.
 type Page struct {
-	ID             int64       `json:"id,omitempty"`
-	Author         string      `json:"author,omitempty"`
-	Handle         string      `json:"handle,omitempty"`
-	Title          string      `json:"title,omitempty"`
-	CreatedAt      *time.Time  `json:"created_at,omitempty"`
-	UpdatedAt      *time.Time  `json:"updated_at,omitempty"`
-	BodyHTML       string      `json:"body_html,omitempty"`
-	TemplateSuffix string      `json:"template_suffix,omitempty"`
-	PublishedAt    *time.Time  `json:"published_at,omitempty"`
-	ShopID         int64       `json:"shop_id,omitempty"`
-	Metafields     []Metafield `json:"metafields,omitempty"`
+	ID                int64      `json:"id"`
+	Title             string     `json:"title"`
+	ShopID            int64      `json:"shop_id"`
+	Handle            string     `json:"handle"`
+	BodyHTML          string     `json:"body_html"`
+	Author            string     `json:"author"`
+	CreatedAt         *time.Time `json:"created_at"`
+	UpdatedAt         *time.Time `json:"updated_at"`
+	PublishedAt       *time.Time `json:"published_at"`
+	TemplateSuffix    string     `json:"template_suffix"`
+	AdminGraphqlAPIID string     `json:"admin_graphql_api_id"`
+
+	Metafields []Metafield `json:"metafields,omitempty"`
 }
 
 // PageResource represents the result from the pages/X.json endpoint
@@ -61,6 +67,27 @@ func (s *PageServiceOp) List(options interface{}) ([]Page, error) {
 	resource := new(PagesResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Pages, err
+}
+
+func (s *PageServiceOp) ListWithPagination(options interface{}) ([]Page, *Pagination, error) {
+	path := fmt.Sprintf("%s.json", pagesBasePath)
+	resource := new(PagesResource)
+	headers := http.Header{}
+
+	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Extract pagination info from header
+	linkHeader := headers.Get("Link")
+
+	pagination, err := extractPagination(linkHeader)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return resource.Pages, pagination, nil
 }
 
 // Count pages

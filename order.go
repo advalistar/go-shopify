@@ -154,6 +154,8 @@ type Order struct {
 	Refunds                []*Refund               `json:"refunds"`
 	ShippingAddress        *Address                `json:"shipping_address"`
 	ShippingLines          []*ShippingLines        `json:"shipping_lines"`
+
+	Metafields []Metafield `json:"metafields,omitempty"`
 }
 
 type Address struct {
