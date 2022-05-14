@@ -131,6 +131,7 @@ type Client struct {
 	Balance                    BalanceService
 	Dispute                    DisputeService
 	Payout                     PayoutService
+	Country                    CountryService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -394,6 +395,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Balance = &BalanceServiceOp{client: c}
 	c.Dispute = &DisputeServiceOp{client: c}
 	c.Payout = &PayoutServiceOp{client: c}
+	c.Country = &CountryServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {

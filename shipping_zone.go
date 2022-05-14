@@ -24,34 +24,10 @@ type ShippingZone struct {
 	ProfileID                    string                         `json:"profile_id"`
 	LocationGroupID              string                         `json:"location_group_id"`
 	AdminGraphqlAPIID            string                         `json:"admin_graphql_api_id"`
-	Countries                    []*ShippingCountry             `json:"countries"`
+	Countries                    []*Country                     `json:"countries"`
 	WeightBasedShippingRates     []*WeightBasedShippingRate     `json:"weight_based_shipping_rates"`
 	PriceBasedShippingRates      []*PriceBasedShippingRate      `json:"price_based_shipping_rates"`
 	CarrierShippingRateProviders []*CarrierShippingRateProvider `json:"carrier_shipping_rate_providers"`
-}
-
-// ShippingCountry represents a Shopify shipping country
-type ShippingCountry struct {
-	ID             int64               `json:"id"`
-	Name           string              `json:"name"`
-	Tax            *decimal.Decimal    `json:"tax"`
-	Code           string              `json:"code"`
-	TaxName        string              `json:"tax_name"`
-	ShippingZoneID int64               `json:"shipping_zone_id"`
-	Provinces      []*ShippingProvince `json:"provinces"`
-}
-
-// ShippingProvince represents a Shopify shipping province
-type ShippingProvince struct {
-	ID             int64            `json:"id"`
-	CountryID      int64            `json:"country_id"`
-	Name           string           `json:"name"`
-	Code           string           `json:"code"`
-	Tax            *decimal.Decimal `json:"tax"`
-	TaxName        string           `json:"tax_name"`
-	TaxType        string           `json:"tax_type"`
-	TaxPercentage  *decimal.Decimal `json:"tax_percentage"`
-	ShippingZoneID int64            `json:"shipping_zone_id"`
 }
 
 // WeightBasedShippingRate represents a Shopify weight-constrained shipping rate
