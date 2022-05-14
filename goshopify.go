@@ -136,6 +136,7 @@ type Client struct {
 	TenderTransaction           TenderTransactionService
 	FulfillmentSvc              FulfillmentSvcService
 	ShopifyPaymentsTransactions ShopifyPaymentsTransactionsService
+	Province                    ProvinceService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -404,6 +405,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.TenderTransaction = &TenderTransactionServiceOp{client: c}
 	c.FulfillmentSvc = &FulfillmentSvcServiceOp{client: c}
 	c.ShopifyPaymentsTransactions = &ShopifyPaymentsTransactionsServiceOp{client: c}
+	c.Province = &ProvinceServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {
