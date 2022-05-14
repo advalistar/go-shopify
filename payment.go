@@ -37,7 +37,7 @@ type CreditCard struct {
 }
 
 type PaymentsResource struct {
-	Payments []Payment `json:"shipping_rates"`
+	Payments []Payment `json:"payments"`
 }
 
 func (s *PaymentServiceOp) List(token string, options interface{}) ([]Payment, error) {
