@@ -51,12 +51,12 @@ type Destination struct {
 
 // Represents the result from the assignedFufillmentOrder.json endpoint
 type AssignedFufillmentOrderResource struct {
-	AssignedFufillmentOrder []AssignedFufillmentOrder `json:"assignedFufillmentOrders"`
+	AssignedFufillmentOrders []AssignedFufillmentOrder `json:"assigned_fufillment_orders"`
 }
 
 // List assignedFufillmentOrder
 func (s *AssignedFufillmentOrderServiceOp) List(options interface{}) ([]AssignedFufillmentOrder, error) {
 	path := fmt.Sprintf("%s.json", assignedFufillmentOrderBasePath)
 	resource := &AssignedFufillmentOrderResource{}
-	return resource.AssignedFufillmentOrder, s.client.Get(path, resource, options)
+	return resource.AssignedFufillmentOrders, s.client.Get(path, resource, options)
 }
