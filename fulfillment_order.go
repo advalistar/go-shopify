@@ -34,6 +34,21 @@ type FulfillmentOrder struct {
 	MerchantRequests         []*MerchantRequest `json:"merchant_requests"`
 }
 
+type Destination struct {
+	ID        int64  `json:"id"`
+	Address1  string `json:"address1"`
+	Address2  string `json:"address2"`
+	City      string `json:"city"`
+	Company   string `json:"company"`
+	Country   string `json:"country"`
+	Email     string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Phone     string `json:"phone"`
+	Province  string `json:"province"`
+	Zip       string `json:"zip"`
+}
+
 type MerchantRequest struct {
 	Message        string           `json:"message"`
 	RequestOptions []*RequestOption `json:"request_options"`

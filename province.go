@@ -29,7 +29,7 @@ type Province struct {
 }
 
 type ProvincesResource struct {
-	Provinces []Province `json:"provincess"`
+	Provinces []Province `json:"provinces"`
 }
 
 // List of discount codes
