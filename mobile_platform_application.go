@@ -2,7 +2,6 @@ package goshopify
 
 import (
 	"fmt"
-	"net/http"
 	"time"
 )
 
@@ -10,7 +9,6 @@ const mobilePlatformApplicationBasePath = "mobile_platform_applications"
 
 type MobilePlatformApplicationService interface {
 	List(interface{}) ([]MobilePlatformApplication, error)
-	ListWithPagination(interface{}) ([]MobilePlatformApplication, *Pagination, error)
 }
 
 type MobilePlatformApplicationServiceOp struct {
@@ -38,25 +36,4 @@ func (s *MobilePlatformApplicationServiceOp) List(options interface{}) ([]Mobile
 	resource := new(MobilePlatformApplicationsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.MobilePlatformApplications, err
-}
-
-func (s *MobilePlatformApplicationServiceOp) ListWithPagination(options interface{}) ([]MobilePlatformApplication, *Pagination, error) {
-	path := fmt.Sprintf("%s.json", mobilePlatformApplicationBasePath)
-	resource := new(MobilePlatformApplicationsResource)
-	headers := http.Header{}
-
-	headers, err := s.client.createAndDoGetHeaders("GET", path, nil, options, resource)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	// Extract pagination info from header
-	linkHeader := headers.Get("Link")
-
-	pagination, err := extractPagination(linkHeader)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return resource.MobilePlatformApplications, pagination, nil
 }
