@@ -81,60 +81,61 @@ type Client struct {
 	RateLimits RateLimitInfo
 
 	// Services used for communicating with the API
-	Product                    ProductService
-	CustomCollection           CustomCollectionService
-	SmartCollection            SmartCollectionService
-	Customer                   CustomerService
-	CustomerAddress            CustomerAddressService
-	Order                      OrderService
-	OrderRisk                  OrderRiskService
-	Refund                     RefundService
-	Fulfillment                FulfillmentService
-	DraftOrder                 DraftOrderService
-	Shop                       ShopService
-	Webhook                    WebhookService
-	Variant                    VariantService
-	Image                      ImageService
-	Transaction                TransactionService
-	Theme                      ThemeService
-	Asset                      AssetService
-	ScriptTag                  ScriptTagService
-	RecurringApplicationCharge RecurringApplicationChargeService
-	UsageCharge                UsageChargeService
-	Metafield                  MetafieldService
-	Blog                       BlogService
-	ApplicationCharge          ApplicationChargeService
-	ApplicationCredit          ApplicationCreditService
-	Redirect                   RedirectService
-	Page                       PageService
-	StorefrontAccessToken      StorefrontAccessTokenService
-	Collect                    CollectService
-	Collection                 CollectionService
-	Location                   LocationService
-	MarketingEvent             MarketingEventService
-	DiscountCode               DiscountCodeService
-	PriceRule                  PriceRuleService
-	Event                      EventService
-	InventoryItem              InventoryItemService
-	InventoryLevel             InventoryLevelService
-	ShippingZone               ShippingZoneService
-	ProductListing             ProductListingService
-	AccessScopes               AccessScopesService
-	GiftCard                   GiftCardService
-	Checkouts                  CheckoutsService
-	Comment                    CommentService
-	Article                    ArticleService
-	CollectionListing          CollectionListingService
-	MobilePlatformApplication  MobilePlatformApplicationService
-	AssignedFufillmentOrder    AssignedFufillmentOrderService
-	CarrierService             CarrierServiceService
-	Balance                    BalanceService
-	Dispute                    DisputeService
-	Payout                     PayoutService
-	Country                    CountryService
-	Currency                   CurrencyService
-	TenderTransaction          TenderTransactionService
-	FulfillmentSvc             FulfillmentSvcService
+	Product                     ProductService
+	CustomCollection            CustomCollectionService
+	SmartCollection             SmartCollectionService
+	Customer                    CustomerService
+	CustomerAddress             CustomerAddressService
+	Order                       OrderService
+	OrderRisk                   OrderRiskService
+	Refund                      RefundService
+	Fulfillment                 FulfillmentService
+	DraftOrder                  DraftOrderService
+	Shop                        ShopService
+	Webhook                     WebhookService
+	Variant                     VariantService
+	Image                       ImageService
+	Transaction                 TransactionService
+	Theme                       ThemeService
+	Asset                       AssetService
+	ScriptTag                   ScriptTagService
+	RecurringApplicationCharge  RecurringApplicationChargeService
+	UsageCharge                 UsageChargeService
+	Metafield                   MetafieldService
+	Blog                        BlogService
+	ApplicationCharge           ApplicationChargeService
+	ApplicationCredit           ApplicationCreditService
+	Redirect                    RedirectService
+	Page                        PageService
+	StorefrontAccessToken       StorefrontAccessTokenService
+	Collect                     CollectService
+	Collection                  CollectionService
+	Location                    LocationService
+	MarketingEvent              MarketingEventService
+	DiscountCode                DiscountCodeService
+	PriceRule                   PriceRuleService
+	Event                       EventService
+	InventoryItem               InventoryItemService
+	InventoryLevel              InventoryLevelService
+	ShippingZone                ShippingZoneService
+	ProductListing              ProductListingService
+	AccessScopes                AccessScopesService
+	GiftCard                    GiftCardService
+	Checkouts                   CheckoutsService
+	Comment                     CommentService
+	Article                     ArticleService
+	CollectionListing           CollectionListingService
+	MobilePlatformApplication   MobilePlatformApplicationService
+	AssignedFufillmentOrder     AssignedFufillmentOrderService
+	CarrierService              CarrierServiceService
+	Balance                     BalanceService
+	Dispute                     DisputeService
+	Payout                      PayoutService
+	Country                     CountryService
+	Currency                    CurrencyService
+	TenderTransaction           TenderTransactionService
+	FulfillmentSvc              FulfillmentSvcService
+	ShopifyPaymentsTransactions ShopifyPaymentsTransactionsService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -402,6 +403,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Currency = &CurrencyServiceOp{client: c}
 	c.TenderTransaction = &TenderTransactionServiceOp{client: c}
 	c.FulfillmentSvc = &FulfillmentSvcServiceOp{client: c}
+	c.ShopifyPaymentsTransactions = &ShopifyPaymentsTransactionsServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {
