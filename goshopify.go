@@ -124,6 +124,7 @@ type Client struct {
 	Checkouts                  CheckoutsService
 	Comment                    CommentService
 	Article                    ArticleService
+	CollectionListing          CollectionListingService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -380,6 +381,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Checkouts = &CheckoutsServiceOp{client: c}
 	c.Comment = &CommentServiceOp{client: c}
 	c.Article = &ArticleServiceOp{client: c}
+	c.CollectionListing = &CollectionListingServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {
