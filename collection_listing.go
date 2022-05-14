@@ -7,8 +7,7 @@ import (
 )
 
 const (
-	collectionListingBasePath      = "collection_listings"
-	collectionsListingResourceName = "collection_listings"
+	collectionListingBasePath = "collection_listings"
 )
 
 type CollectionListingService interface {
