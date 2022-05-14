@@ -121,7 +121,7 @@ type Client struct {
 	ProductListing              ProductListingService
 	AccessScopes                AccessScopesService
 	GiftCard                    GiftCardService
-	Checkouts                   CheckoutsService
+	Checkout                    CheckoutService
 	Comment                     CommentService
 	Article                     ArticleService
 	CollectionListing           CollectionListingService
@@ -140,6 +140,7 @@ type Client struct {
 	FulfillmentOrder            FulfillmentOrderService
 	FulfillmentEvent            FulfillmentEventService
 	LocationsForMove            LocationsForMoveService
+	AdandonedCheckout           AdandonedCheckoutService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -393,7 +394,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.ProductListing = &ProductListingServiceOp{client: c}
 	c.AccessScopes = &AccessScopesServiceOp{client: c}
 	c.GiftCard = &GiftCardServiceOp{client: c}
-	c.Checkouts = &CheckoutsServiceOp{client: c}
+	c.Checkout = &CheckoutServiceOp{client: c}
 	c.Comment = &CommentServiceOp{client: c}
 	c.Article = &ArticleServiceOp{client: c}
 	c.CollectionListing = &CollectionListingServiceOp{client: c}
@@ -412,6 +413,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.FulfillmentOrder = &FulfillmentOrderServiceOp{client: c}
 	c.FulfillmentEvent = &FulfillmentEventServiceOp{client: c}
 	c.LocationsForMove = &LocationsForMoveServiceOp{client: c}
+	c.AdandonedCheckout = &AdandonedCheckoutServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {
