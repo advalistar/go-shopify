@@ -5,24 +5,24 @@ import (
 )
 
 const (
-	adandonedCheckoutsBasePath = "checkouts"
+	abandonedCheckoutsBasePath = "checkouts"
 )
 
-type AdandonedCheckoutService interface {
+type AbandonedCheckoutService interface {
 	List(interface{}) ([]Checkout, error)
 }
 
-type AdandonedCheckoutServiceOp struct {
+type AbandonedCheckoutServiceOp struct {
 	client *Client
 }
 
-type AdandonedCheckoutResource struct {
+type AbandonedCheckoutResource struct {
 	Checkouts []Checkout `json:"checkouts"`
 }
 
 // List checkouts
-func (s *AdandonedCheckoutServiceOp) List(options interface{}) ([]Checkout, error) {
-	path := fmt.Sprintf("%s.json", adandonedCheckoutsBasePath)
-	resource := &AdandonedCheckoutResource{}
+func (s *AbandonedCheckoutServiceOp) List(options interface{}) ([]Checkout, error) {
+	path := fmt.Sprintf("%s.json", abandonedCheckoutsBasePath)
+	resource := &AbandonedCheckoutResource{}
 	return resource.Checkouts, s.client.Get(path, resource, options)
 }

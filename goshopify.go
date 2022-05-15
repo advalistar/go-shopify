@@ -140,7 +140,7 @@ type Client struct {
 	FulfillmentOrder            FulfillmentOrderService
 	FulfillmentEvent            FulfillmentEventService
 	LocationsForMove            LocationsForMoveService
-	AdandonedCheckout           AdandonedCheckoutService
+	AbandonedCheckout           AbandonedCheckoutService
 	Payment                     PaymentService
 }
 
@@ -414,7 +414,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.FulfillmentOrder = &FulfillmentOrderServiceOp{client: c}
 	c.FulfillmentEvent = &FulfillmentEventServiceOp{client: c}
 	c.LocationsForMove = &LocationsForMoveServiceOp{client: c}
-	c.AdandonedCheckout = &AdandonedCheckoutServiceOp{client: c}
+	c.AbandonedCheckout = &AbandonedCheckoutServiceOp{client: c}
 	c.Payment = &PaymentServiceOp{client: c}
 
 	// apply any options
