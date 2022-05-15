@@ -8,7 +8,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-const tenderTransactionsBasePath = "tenderTransactions"
+const tenderTransactionsBasePath = "tender_transactions"
 
 type TenderTransactionService interface {
 	List(interface{}) ([]TenderTransaction, error)
