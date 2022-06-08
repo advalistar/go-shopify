@@ -20,17 +20,17 @@ type RefundServiceOp struct {
 }
 
 type Refund struct {
-	ID                int64             `json:"id"`
-	AdminGraphqlAPIID string            `json:"admin_graphql_api_id"`
-	CreatedAt         *time.Time        `json:"created_at"`
-	Note              string            `json:"note"`
-	OrderID           int64             `json:"order_id"`
-	ProcessedAt       *time.Time        `json:"processed_at"`
-	Restock           bool              `json:"restock"`
-	UserID            int64             `json:"user_id"`
-	OrderAdjustments  *OrderAdjustments `json:"order_adjustments"`
-	Transactions      []*Transaction    `json:"transactions"`
-	RefundLineItems   []*RefundLineItem `json:"refund_line_items"`
+	ID                int64               `json:"id"`
+	AdminGraphqlAPIID string              `json:"admin_graphql_api_id"`
+	CreatedAt         *time.Time          `json:"created_at"`
+	Note              string              `json:"note"`
+	OrderID           int64               `json:"order_id"`
+	ProcessedAt       *time.Time          `json:"processed_at"`
+	Restock           bool                `json:"restock"`
+	UserID            int64               `json:"user_id"`
+	OrderAdjustments  []*OrderAdjustments `json:"order_adjustments"`
+	Transactions      []*Transaction      `json:"transactions"`
+	RefundLineItems   []*RefundLineItem   `json:"refund_line_items"`
 }
 
 type OrderAdjustments struct {
