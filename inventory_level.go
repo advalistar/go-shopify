@@ -34,7 +34,7 @@ type InventoryLevel struct {
 // InventoryLevelsResource represents the result from the
 // admin/inventoryLevels.json endpoint.
 type InventoryLevelsResource struct {
-	InventoryLevels []InventoryLevel `json:"inventoryLevels"`
+	InventoryLevels []InventoryLevel `json:"inventory_levels"`
 }
 
 type InventoryLevelsOptions struct {
