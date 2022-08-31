@@ -126,7 +126,7 @@ type Client struct {
 	Article                     ArticleService
 	CollectionListing           CollectionListingService
 	MobilePlatformApplication   MobilePlatformApplicationService
-	AssignedFufillmentOrder     AssignedFufillmentOrderService
+	AssignedFulfillmentOrder    AssignedFulfillmentOrderService
 	CarrierService              CarrierServiceService
 	Balance                     BalanceService
 	Dispute                     DisputeService
@@ -400,7 +400,7 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.Article = &ArticleServiceOp{client: c}
 	c.CollectionListing = &CollectionListingServiceOp{client: c}
 	c.MobilePlatformApplication = &MobilePlatformApplicationServiceOp{client: c}
-	c.AssignedFufillmentOrder = &AssignedFufillmentOrderServiceOp{client: c}
+	c.AssignedFulfillmentOrder = &AssignedFulfillmentOrderServiceOp{client: c}
 	c.CarrierService = &CarrierServiceServiceOp{client: c}
 	c.Balance = &BalanceServiceOp{client: c}
 	c.Dispute = &DisputeServiceOp{client: c}
