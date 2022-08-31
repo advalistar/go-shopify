@@ -8,11 +8,14 @@ const fulfillmentServicesBasePath = "fulfillment_services"
 
 type FulfillmentSvcService interface {
 	List(interface{}) ([]FulfillmentSvc, error)
+	Get(int64, interface{}) (FulfillmentSvc, error)
 }
 
 type FulfillmentSvcServiceOp struct {
 	client *Client
 }
+
+var _ FulfillmentSvcService = &FulfillmentSvcServiceOp{}
 
 type FulfillmentSvc struct {
 	ID                     int64  `json:"id"`
@@ -32,6 +35,7 @@ type FulfillmentSvc struct {
 
 type FulfillmentSvcsResource struct {
 	FulfillmentSvcs []FulfillmentSvc `json:"fulfillment_services"`
+	FulfillmentSvc  FulfillmentSvc   `json:"fulfillment_service"`
 }
 
 // List shipping zones
@@ -40,4 +44,11 @@ func (s *FulfillmentSvcServiceOp) List(options interface{}) ([]FulfillmentSvc, e
 	resource := new(FulfillmentSvcsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.FulfillmentSvcs, err
+}
+
+func (s *FulfillmentSvcServiceOp) Get(id int64, options interface{}) (FulfillmentSvc, error) {
+	path := fmt.Sprintf("%s/%d.json", fulfillmentServicesBasePath, id)
+	resource := new(FulfillmentSvcsResource)
+	err := s.client.Get(path, resource, options)
+	return resource.FulfillmentSvc, err
 }
