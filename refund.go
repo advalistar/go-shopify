@@ -91,8 +91,8 @@ func (s *RefundServiceOp) GetOrderList() []string {
 	str := new(Refund)
 
 	var orderList []string
-	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
-		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	for i := 0; i < reflect.TypeOf(*str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(*str).Field(i).Tag.Get("json"))
 	}
 
 	return orderList

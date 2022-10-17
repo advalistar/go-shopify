@@ -83,7 +83,7 @@ func (s *LocationServiceOp) GetOrderList() []string {
 
 	var orderList []string
 	for i := 0; i < reflect.TypeOf(*str).NumField(); i++ {
-		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+		orderList = append(orderList, reflect.TypeOf(*str).Field(i).Tag.Get("json"))
 	}
 
 	return orderList
