@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const redirectsBasePath = "redirects"
@@ -16,6 +17,7 @@ type RedirectService interface {
 	Create(Redirect) (*Redirect, error)
 	Update(Redirect) (*Redirect, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // RedirectServiceOp handles communication with the redirect related methods of the
@@ -84,4 +86,15 @@ func (s *RedirectServiceOp) Update(redirect Redirect) (*Redirect, error) {
 // Delete an existing redirect.
 func (s *RedirectServiceOp) Delete(redirectID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", redirectsBasePath, redirectID))
+}
+
+func (s *RedirectServiceOp) GetOrderList() []string {
+	str := new(Redirect)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

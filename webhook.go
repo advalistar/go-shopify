@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -17,6 +18,7 @@ type WebhookService interface {
 	Create(Webhook) (*Webhook, error)
 	Update(Webhook) (*Webhook, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // WebhookServiceOp handles communication with the webhook-related methods of
@@ -96,4 +98,15 @@ func (s *WebhookServiceOp) Update(webhook Webhook) (*Webhook, error) {
 // Delete an existing webhooks
 func (s *WebhookServiceOp) Delete(ID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", webhooksBasePath, ID))
+}
+
+func (s *WebhookServiceOp) GetOrderList() []string {
+	str := new(Webhook)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

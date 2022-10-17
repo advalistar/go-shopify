@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -17,6 +18,7 @@ type ApplicationChargeService interface {
 	Get(int64, interface{}) (*ApplicationCharge, error)
 	List(interface{}) ([]ApplicationCharge, error)
 	Activate(ApplicationCharge) (*ApplicationCharge, error)
+	GetOrderList() []string
 }
 
 type ApplicationChargeServiceOp struct {
@@ -76,4 +78,15 @@ func (a ApplicationChargeServiceOp) Activate(charge ApplicationCharge) (*Applica
 	path := fmt.Sprintf("%s/%d/activate.json", applicationChargesBasePath, charge.ID)
 	resource := &ApplicationChargeResource{}
 	return resource.Charge, a.client.Post(path, ApplicationChargeResource{Charge: &charge}, resource)
+}
+
+func (s *ApplicationChargeServiceOp) GetOrderList() []string {
+	str := new(ApplicationCharge)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

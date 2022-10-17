@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -11,6 +12,7 @@ const inventoryLevelBasePath = "inventory_levels"
 type InventoryLevelService interface {
 	List(interface{}) ([]InventoryLevel, error)
 	ListWithPagination(interface{}) ([]InventoryLevel, *Pagination, error)
+	GetOrderList() []string
 }
 
 type InventoryLevelServiceOp struct {
@@ -82,4 +84,15 @@ func (s *InventoryLevelServiceOp) ListWithPagination(options interface{}) ([]Inv
 	}
 
 	return resource.InventoryLevels, pagination, nil
+}
+
+func (s *InventoryLevelServiceOp) GetOrderList() []string {
+	str := new(InventoryLevel)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

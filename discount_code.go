@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -18,6 +19,7 @@ type DiscountCodeService interface {
 	ListWithPagination(int64, interface{}) ([]PriceRuleDiscountCode, *Pagination, error)
 	Get(int64, int64) (*PriceRuleDiscountCode, error)
 	Delete(int64, int64) error
+	GetOrderList() []string
 }
 
 // DiscountCodeServiceOp handles communication with the discount code
@@ -104,4 +106,15 @@ func (s *DiscountCodeServiceOp) Get(priceRuleID int64, discountCodeID int64) (*P
 // Delete a discount code
 func (s *DiscountCodeServiceOp) Delete(priceRuleID int64, discountCodeID int64) error {
 	return s.client.Delete(fmt.Sprintf(discountCodeBasePath+"/%d.json", priceRuleID, discountCodeID))
+}
+
+func (s *DiscountCodeServiceOp) GetOrderList() []string {
+	str := new(PriceRuleDiscountCode)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

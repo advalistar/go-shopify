@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const (
@@ -10,6 +11,7 @@ const (
 
 type AbandonedCheckoutService interface {
 	List(interface{}) ([]Checkout, error)
+	GetOrderList() []string
 }
 
 type AbandonedCheckoutServiceOp struct {
@@ -25,4 +27,15 @@ func (s *AbandonedCheckoutServiceOp) List(options interface{}) ([]Checkout, erro
 	path := fmt.Sprintf("%s.json", abandonedCheckoutsBasePath)
 	resource := &AbandonedCheckoutResource{}
 	return resource.Checkouts, s.client.Get(path, resource, options)
+}
+
+func (s *AbandonedCheckoutServiceOp) GetOrderList() []string {
+	str := new(Checkout)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

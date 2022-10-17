@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const (
@@ -10,6 +11,7 @@ const (
 
 type PaymentService interface {
 	List(string, interface{}) ([]Payment, error)
+	GetOrderList() []string
 }
 
 type PaymentServiceOp struct {
@@ -44,4 +46,15 @@ func (s *PaymentServiceOp) List(token string, options interface{}) ([]Payment, e
 	path := fmt.Sprintf(paymentsBasePath+".json", token)
 	resource := &PaymentsResource{}
 	return resource.Payments, s.client.Get(path, resource, options)
+}
+
+func (s *PaymentServiceOp) GetOrderList() []string {
+	str := new(Payment)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

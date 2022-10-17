@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -22,6 +23,7 @@ type VariantService interface {
 	Create(int64, Variant) (*Variant, error)
 	Update(Variant) (*Variant, error)
 	Delete(int64, int64) error
+	GetOrderList() []string
 
 	// MetafieldsService used for Variant resource to communicate with Metafields resource
 	MetafieldsService
@@ -163,4 +165,15 @@ func (s *VariantServiceOp) UpdateMetafield(variantID int64, metafield Metafield)
 func (s *VariantServiceOp) DeleteMetafield(variantID int64, metafieldID int64) error {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: variantsResourceName, resourceID: variantID}
 	return metafieldService.Delete(metafieldID)
+}
+
+func (s *VariantServiceOp) GetOrderList() []string {
+	str := new(Variant)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

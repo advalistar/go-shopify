@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -22,6 +23,7 @@ type ProductListingService interface {
 	GetProductIDs(interface{}) ([]int64, error)
 	Publish(int64) (*ProductListing, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // ProductListingServiceOp handles communication with the product related methods of
@@ -143,4 +145,15 @@ func (s *ProductListingServiceOp) Publish(productID int64) (*ProductListing, err
 // Delete unpublishes an existing product from your sales channel app.
 func (s *ProductListingServiceOp) Delete(productID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", productListingBasePath, productID))
+}
+
+func (s *ProductListingServiceOp) GetOrderList() []string {
+	str := new(ProductListing)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -27,6 +28,7 @@ type CustomerService interface {
 	Delete(int64) error
 	ListOrders(int64, interface{}) ([]Order, error)
 	ListTags(interface{}) ([]string, error)
+	GetOrderList() []string
 
 	// MetafieldsService used for Customer resource to communicate with Metafields resource
 	MetafieldsService
@@ -195,6 +197,17 @@ func (s *CustomerServiceOp) ListTags(options interface{}) ([]string, error) {
 	resource := new(CustomerTagsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Tags, err
+}
+
+func (s *CustomerServiceOp) GetOrderList() []string {
+	str := new(Customer)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }
 
 // List metafields for a customer

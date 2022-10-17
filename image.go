@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type ImageService interface {
 	Create(int64, Image) (*Image, error)
 	Update(int64, Image) (*Image, error)
 	Delete(int64, int64) error
+	GetOrderList() []string
 }
 
 // ImageServiceOp handles communication with the image related methods of
@@ -105,4 +107,15 @@ func (s *ImageServiceOp) Update(productID int64, image Image) (*Image, error) {
 // Delete an existing image
 func (s *ImageServiceOp) Delete(productID int64, imageID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d/images/%d.json", productsBasePath, productID, imageID))
+}
+
+func (s *ImageServiceOp) GetOrderList() []string {
+	str := new(Image)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

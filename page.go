@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -22,6 +23,7 @@ type PageService interface {
 	Create(Page) (*Page, error)
 	Update(Page) (*Page, error)
 	Delete(int64) error
+	GetOrderList() []string
 
 	// MetafieldsService used for Pages resource to communicate with Metafields
 	// resource
@@ -161,4 +163,15 @@ func (s *PageServiceOp) UpdateMetafield(pageID int64, metafield Metafield) (*Met
 func (s *PageServiceOp) DeleteMetafield(pageID int64, metafieldID int64) error {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: pagesResourceName, resourceID: pageID}
 	return metafieldService.Delete(metafieldID)
+}
+
+func (s *PageServiceOp) GetOrderList() []string {
+	str := new(Page)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

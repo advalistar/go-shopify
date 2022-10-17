@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"regexp"
 	"time"
 )
@@ -26,6 +27,7 @@ type ProductService interface {
 	Create(Product) (*Product, error)
 	Update(Product) (*Product, error)
 	Delete(int64) error
+	GetOrderList() []string
 
 	// MetafieldsService used for Product resource to communicate with Metafields resource
 	MetafieldsService
@@ -155,6 +157,17 @@ func (s *ProductServiceOp) Update(product Product) (*Product, error) {
 // Delete an existing product
 func (s *ProductServiceOp) Delete(productID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", productsBasePath, productID))
+}
+
+func (s *ProductServiceOp) GetOrderList() []string {
+	str := new(Product)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }
 
 // ListMetafields for a product

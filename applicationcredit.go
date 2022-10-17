@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/shopspring/decimal"
 )
@@ -15,6 +16,7 @@ type ApplicationCreditService interface {
 	Create(ApplicationCredit) (*ApplicationCredit, error)
 	Get(int64, interface{}) (*ApplicationCredit, error)
 	List(interface{}) ([]ApplicationCredit, error)
+	GetOrderList() []string
 }
 
 type ApplicationCreditServiceOp struct {
@@ -59,4 +61,15 @@ func (s ApplicationCreditServiceOp) List(options interface{}) ([]ApplicationCred
 	path := fmt.Sprintf("%s.json", applicationCreditsBasePath)
 	resource := &ApplicationCreditsResource{}
 	return resource.Credits, s.client.Get(path, resource, options)
+}
+
+func (s *ApplicationCreditServiceOp) GetOrderList() []string {
+	str := new(ApplicationCredit)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

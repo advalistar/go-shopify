@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -17,6 +18,7 @@ type TransactionService interface {
 	Count(int64, interface{}) (int, error)
 	Get(int64, int64, interface{}) (*Transaction, error)
 	Create(int64, Transaction) (*Transaction, error)
+	GetOrderList() []string
 }
 
 // TransactionServiceOp handles communication with the transaction related methods of the
@@ -110,4 +112,15 @@ func (s *TransactionServiceOp) Create(orderID int64, transaction Transaction) (*
 	resource := new(TransactionResource)
 	err := s.client.Post(path, wrappedData, resource)
 	return resource.Transaction, err
+}
+
+func (s *TransactionServiceOp) GetOrderList() []string {
+	str := new(Transaction)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

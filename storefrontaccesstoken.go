@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -14,6 +15,7 @@ type StorefrontAccessTokenService interface {
 	List(interface{}) ([]StorefrontAccessToken, error)
 	Create(StorefrontAccessToken) (*StorefrontAccessToken, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // StorefrontAccessTokenServiceOp handles communication with the storefront access token
@@ -62,4 +64,15 @@ func (s *StorefrontAccessTokenServiceOp) Create(storefrontAccessToken Storefront
 // Delete an existing storefront access token
 func (s *StorefrontAccessTokenServiceOp) Delete(ID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", storefrontAccessTokensBasePath, ID))
+}
+
+func (s *StorefrontAccessTokenServiceOp) GetOrderList() []string {
+	str := new(StorefrontAccessToken)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

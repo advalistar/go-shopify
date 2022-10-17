@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -13,6 +14,7 @@ const disputesBasePath = "shopify_payments/disputes"
 type DisputeService interface {
 	List(interface{}) ([]Dispute, error)
 	ListWithPagination(interface{}) ([]Dispute, *Pagination, error)
+	GetOrderList() []string
 }
 
 type DisputeServiceOp struct {
@@ -67,4 +69,15 @@ func (s *DisputeServiceOp) ListWithPagination(options interface{}) ([]Dispute, *
 	}
 
 	return resource.Disputes, pagination, nil
+}
+
+func (s *DisputeServiceOp) GetOrderList() []string {
+	str := new(Dispute)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

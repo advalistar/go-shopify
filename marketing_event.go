@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -17,6 +18,7 @@ type MarketingEventService interface {
 	Get(int64, interface{}) (*MarketingEvent, error)
 	List(interface{}) ([]MarketingEvent, error)
 	ListWithPagination(interface{}) ([]MarketingEvent, *Pagination, error)
+	GetOrderList() []string
 }
 
 type MarketingEventServiceOp struct {
@@ -98,4 +100,15 @@ func (s *MarketingEventServiceOp) ListWithPagination(options interface{}) ([]Mar
 	}
 
 	return resource.MarketingEvents, pagination, nil
+}
+
+func (s *MarketingEventServiceOp) GetOrderList() []string {
+	str := new(MarketingEvent)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -13,6 +14,7 @@ const refundBasePath = "orders/%d/refund"
 type RefundService interface {
 	List(int64, interface{}) ([]Refund, error)
 	ListWithPagination(int64, interface{}) ([]Refund, *Pagination, error)
+	GetOrderList() []string
 }
 
 type RefundServiceOp struct {
@@ -83,4 +85,15 @@ func (s *RefundServiceOp) ListWithPagination(orderID int64, options interface{})
 	}
 
 	return resource.Refunds, pagination, nil
+}
+
+func (s *RefundServiceOp) GetOrderList() []string {
+	str := new(Refund)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

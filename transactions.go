@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -13,6 +14,7 @@ const transactionsBasePath = "shopify_payments/balance/transactions"
 type ShopifyPaymentsTransactionsService interface {
 	List(interface{}) ([]ShopifyPaymentsTransactions, error)
 	ListWithPagination(interface{}) ([]ShopifyPaymentsTransactions, *Pagination, error)
+	GetOrderList() []string
 }
 
 type ShopifyPaymentsTransactionsServiceOp struct {
@@ -67,4 +69,15 @@ func (s *ShopifyPaymentsTransactionsServiceOp) ListWithPagination(options interf
 	}
 
 	return resource.ShopifyPaymentsTransactions, pagination, nil
+}
+
+func (s *ShopifyPaymentsTransactionsServiceOp) GetOrderList() []string {
+	str := new(ShopifyPaymentsTransactions)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type CollectionService interface {
 	Get(collectionID int64, options interface{}) (*Collection, error)
 	ListProducts(collectionID int64, options interface{}) ([]Product, error)
 	ListProductsWithPagination(collectionID int64, options interface{}) ([]Product, *Pagination, error)
+	GetOrderList() []string
 }
 
 // CollectionServiceOp handles communication with the collection related methods of
@@ -82,4 +84,15 @@ func (s *CollectionServiceOp) ListProductsWithPagination(collectionID int64, opt
 	}
 
 	return resource.Products, pagination, nil
+}
+
+func (s *CollectionServiceOp) GetOrderList() []string {
+	str := new(Collection)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type CollectService interface {
 	List(interface{}) ([]Collect, error)
 	ListWithPagination(interface{}) ([]Collect, *Pagination, error)
 	Count(interface{}) (int, error)
+	GetOrderList() []string
 }
 
 // CollectServiceOp handles communication with the collect related methods of
@@ -77,4 +79,15 @@ func (s *CollectServiceOp) ListWithPagination(options interface{}) ([]Collect, *
 func (s *CollectServiceOp) Count(options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/count.json", collectsBasePath)
 	return s.client.Count(path, options)
+}
+
+func (s *CollectServiceOp) GetOrderList() []string {
+	str := new(Collect)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

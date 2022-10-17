@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type MetafieldService interface {
 	Create(Metafield) (*Metafield, error)
 	Update(Metafield) (*Metafield, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // MetafieldsService is an interface for other Shopify resources
@@ -112,4 +114,15 @@ func (s *MetafieldServiceOp) Update(metafield Metafield) (*Metafield, error) {
 func (s *MetafieldServiceOp) Delete(metafieldID int64) error {
 	prefix := MetafieldPathPrefix(s.resource, s.resourceID)
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", prefix, metafieldID))
+}
+
+func (s *MetafieldServiceOp) GetOrderList() []string {
+	str := new(Metafield)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

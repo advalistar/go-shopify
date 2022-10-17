@@ -3,6 +3,7 @@ package goshopify
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -17,6 +18,7 @@ type UsageChargeService interface {
 	Create(int64, UsageCharge) (*UsageCharge, error)
 	Get(int64, int64, interface{}) (*UsageCharge, error)
 	List(int64, interface{}) ([]UsageCharge, error)
+	GetOrderList() []string
 }
 
 // UsageChargeServiceOp handles communication with the
@@ -92,4 +94,15 @@ func (r *UsageChargeServiceOp) List(chargeID int64, options interface{}) ([]Usag
 	resource := &UsageChargesResource{}
 	err := r.client.Get(path, resource, options)
 	return resource.Charges, err
+}
+
+func (s *UsageChargeServiceOp) GetOrderList() []string {
+	str := new(UsageCharge)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

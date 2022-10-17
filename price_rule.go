@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -18,6 +19,7 @@ type PriceRuleService interface {
 	Update(PriceRule) (*PriceRule, error)
 	List() ([]PriceRule, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // PriceRuleServiceOp handles communication with the price rule related methods of the Shopify API.
@@ -196,4 +198,15 @@ func (s *PriceRuleServiceOp) Delete(priceRuleID int64) error {
 func validateMoney(v string) bool {
 	_, err := decimal.NewFromString(v)
 	return err == nil
+}
+
+func (s *PriceRuleServiceOp) GetOrderList() []string {
+	str := new(PriceRule)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

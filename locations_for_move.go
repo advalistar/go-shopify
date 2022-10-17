@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const (
@@ -10,6 +11,7 @@ const (
 
 type LocationsForMoveService interface {
 	List(int64, interface{}) ([]LocationsForMove, error)
+	GetOrderList() []string
 }
 
 type LocationsForMoveServiceOp struct {
@@ -37,4 +39,15 @@ func (s *LocationsForMoveServiceOp) List(fulfillmentOrderID int64, options inter
 	resource := new(LocationsForMovesResource)
 	err := s.client.Get(path, resource, options)
 	return resource.LocationsForMoves, err
+}
+
+func (s *LocationsForMoveServiceOp) GetOrderList() []string {
+	str := new(LocationsForMove)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

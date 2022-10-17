@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -15,6 +16,7 @@ const (
 type CheckoutService interface {
 	Get(string, interface{}) (*Checkout, error)
 	ShoppingRateList(string, interface{}) ([]ShoppingRate, error)
+	GetOrderList() []string
 }
 
 type CheckoutServiceOp struct {
@@ -103,4 +105,15 @@ func (s *CheckoutServiceOp) ShoppingRateList(token string, options interface{}) 
 	path := fmt.Sprintf(checkoutsShoppingRateBasePath+".json", token)
 	resource := &CheckoutsShoppingRateResource{}
 	return resource.ShoppingRates, s.client.Get(path, resource, options)
+}
+
+func (s *CheckoutServiceOp) GetOrderList() []string {
+	str := new(Checkout)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

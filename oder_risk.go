@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/shopspring/decimal"
 )
@@ -12,6 +13,7 @@ const orderRiskBasePath = "orders/%d/risks"
 type OrderRiskService interface {
 	List(int64) ([]Risk, error)
 	ListWithPagination(int64, interface{}) ([]Risk, *Pagination, error)
+	GetOrderList() []string
 }
 
 type OrderRiskServiceOp struct {
@@ -62,4 +64,15 @@ func (s *OrderRiskServiceOp) ListWithPagination(orderID int64, options interface
 	}
 
 	return resource.Risks, pagination, nil
+}
+
+func (s *OrderRiskServiceOp) GetOrderList() []string {
+	str := new(Risk)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

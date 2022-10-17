@@ -1,6 +1,7 @@
 package goshopify
 
 import (
+	"reflect"
 	"time"
 )
 
@@ -9,6 +10,7 @@ import (
 // See: https://help.shopify.com/api/reference/shop
 type ShopService interface {
 	Get(options interface{}) (*Shop, error)
+	GetOrderList() []string
 }
 
 // ShopServiceOp handles communication with the shop related methods of the
@@ -86,4 +88,15 @@ func (s *ShopServiceOp) Get(options interface{}) (*Shop, error) {
 	resource := new(ShopResource)
 	err := s.client.Get("shop.json", resource, options)
 	return resource.Shop, err
+}
+
+func (s *ShopServiceOp) GetOrderList() []string {
+	str := new(Shop)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

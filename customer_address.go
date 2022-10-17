@@ -1,6 +1,9 @@
 package goshopify
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 const customerAddressResourceName = "customer-addresses"
 
@@ -13,6 +16,7 @@ type CustomerAddressService interface {
 	Create(int64, CustomerAddress) (*CustomerAddress, error)
 	Update(int64, CustomerAddress) (*CustomerAddress, error)
 	Delete(int64, int64) error
+	GetOrderList() []string
 }
 
 // CustomerAddressServiceOp handles communication with the customer address related methods of
@@ -89,4 +93,15 @@ func (s *CustomerAddressServiceOp) Update(customerID int64, address CustomerAddr
 // Delete an existing address
 func (s *CustomerAddressServiceOp) Delete(customerID, addressID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d/addresses/%d.json", customersBasePath, customerID, addressID))
+}
+
+func (s *CustomerAddressServiceOp) GetOrderList() []string {
+	str := new(CustomerAddress)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

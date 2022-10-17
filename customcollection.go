@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -22,6 +23,7 @@ type CustomCollectionService interface {
 	Create(CustomCollection) (*CustomCollection, error)
 	Update(CustomCollection) (*CustomCollection, error)
 	Delete(int64) error
+	GetOrderList() []string
 
 	// MetafieldsService used for CustomCollection resource to communicate with Metafields resource
 	MetafieldsService
@@ -125,6 +127,17 @@ func (s *CustomCollectionServiceOp) Update(collection CustomCollection) (*Custom
 // Delete an existing custom collection.
 func (s *CustomCollectionServiceOp) Delete(collectionID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", customCollectionsBasePath, collectionID))
+}
+
+func (s *CustomCollectionServiceOp) GetOrderList() []string {
+	str := new(CustomCollection)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }
 
 // List metafields for a custom collection

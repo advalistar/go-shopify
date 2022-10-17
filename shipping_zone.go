@@ -1,6 +1,8 @@
 package goshopify
 
 import (
+	"reflect"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -9,6 +11,7 @@ import (
 // See: https://help.shopify.com/api/reference/store-properties/shippingzone
 type ShippingZoneService interface {
 	List() ([]ShippingZone, error)
+	GetOrderList() []string
 }
 
 // ShippingZoneServiceOp handles communication with the shipping zone related methods
@@ -70,4 +73,15 @@ func (s *ShippingZoneServiceOp) List() ([]ShippingZone, error) {
 	resource := new(ShippingZonesResource)
 	err := s.client.Get("shipping_zones.json", resource, nil)
 	return resource.ShippingZones, err
+}
+
+func (s *ShippingZoneServiceOp) GetOrderList() []string {
+	str := new(ShippingZone)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

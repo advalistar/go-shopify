@@ -3,6 +3,7 @@ package goshopify
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -20,6 +21,7 @@ type RecurringApplicationChargeService interface {
 	Activate(RecurringApplicationCharge) (*RecurringApplicationCharge, error)
 	Delete(int64) error
 	Update(int64, int64) (*RecurringApplicationCharge, error)
+	GetOrderList() []string
 }
 
 // RecurringApplicationChargeServiceOp handles communication with the
@@ -180,4 +182,15 @@ func (r *RecurringApplicationChargeServiceOp) Update(chargeID, newCappedAmount i
 	resource := &RecurringApplicationChargeResource{}
 	err := r.client.Put(path, nil, resource)
 	return resource.Charge, err
+}
+
+func (s *RecurringApplicationChargeServiceOp) GetOrderList() []string {
+	str := new(RecurringApplicationCharge)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -9,6 +10,7 @@ const mobilePlatformApplicationBasePath = "mobile_platform_applications"
 
 type MobilePlatformApplicationService interface {
 	List(interface{}) ([]MobilePlatformApplication, error)
+	GetOrderList() []string
 }
 
 type MobilePlatformApplicationServiceOp struct {
@@ -36,4 +38,15 @@ func (s *MobilePlatformApplicationServiceOp) List(options interface{}) ([]Mobile
 	resource := new(MobilePlatformApplicationsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.MobilePlatformApplications, err
+}
+
+func (s *MobilePlatformApplicationServiceOp) GetOrderList() []string {
+	str := new(MobilePlatformApplication)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

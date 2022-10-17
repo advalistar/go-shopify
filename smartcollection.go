@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -22,6 +23,7 @@ type SmartCollectionService interface {
 	Create(SmartCollection) (*SmartCollection, error)
 	Update(SmartCollection) (*SmartCollection, error)
 	Delete(int64) error
+	GetOrderList() []string
 
 	// MetafieldsService used for SmartCollection resource to communicate with Metafields resource
 	MetafieldsService
@@ -131,6 +133,17 @@ func (s *SmartCollectionServiceOp) Update(collection SmartCollection) (*SmartCol
 // Delete an existing smart collection.
 func (s *SmartCollectionServiceOp) Delete(collectionID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", smartCollectionsBasePath, collectionID))
+}
+
+func (s *SmartCollectionServiceOp) GetOrderList() []string {
+	str := new(SmartCollection)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }
 
 // List metafields for a smart collection

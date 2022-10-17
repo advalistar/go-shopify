@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -17,6 +18,7 @@ type FulfillmentService interface {
 	Complete(int64) (*Fulfillment, error)
 	Transition(int64) (*Fulfillment, error)
 	Cancel(int64) (*Fulfillment, error)
+	GetOrderList() []string
 }
 
 // FulfillmentsService is an interface for other Shopify resources
@@ -149,4 +151,15 @@ func (s *FulfillmentServiceOp) Cancel(fulfillmentID int64) (*Fulfillment, error)
 	resource := new(FulfillmentResource)
 	err := s.client.Post(path, nil, resource)
 	return resource.Fulfillment, err
+}
+
+func (s *FulfillmentServiceOp) GetOrderList() []string {
+	str := new(Fulfillment)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

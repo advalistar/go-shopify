@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type AssetService interface {
 	Get(int64, string) (*Asset, error)
 	Update(int64, Asset) (*Asset, error)
 	Delete(int64, string) error
+	GetOrderList() []string
 }
 
 // AssetServiceOp handles communication with the asset related methods of
@@ -86,4 +88,15 @@ func (s *AssetServiceOp) Update(themeID int64, asset Asset) (*Asset, error) {
 func (s *AssetServiceOp) Delete(themeID int64, key string) error {
 	path := fmt.Sprintf("%s/%d/assets.json?asset[key]=%s", assetsBasePath, themeID, key)
 	return s.client.Delete(path)
+}
+
+func (s *AssetServiceOp) GetOrderList() []string {
+	str := new(Asset)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

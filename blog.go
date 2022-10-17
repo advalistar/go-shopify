@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -19,6 +20,7 @@ type BlogService interface {
 	Create(Blog) (*Blog, error)
 	Update(Blog) (*Blog, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // BlogServiceOp handles communication with the blog related methods of
@@ -116,4 +118,15 @@ func (s *BlogServiceOp) Update(blog Blog) (*Blog, error) {
 // Delete an blog
 func (s *BlogServiceOp) Delete(blogID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", blogsBasePath, blogID))
+}
+
+func (s *BlogServiceOp) GetOrderList() []string {
+	str := new(Blog)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

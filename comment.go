@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type CommentService interface {
 	ListWithPagination(interface{}) ([]Comment, *Pagination, error)
 	Count(interface{}) (int, error)
 	Get(int64, interface{}) (*Comment, error)
+	GetOrderList() []string
 }
 
 // CommentServiceOp handles communication with the comment related methods of the
@@ -91,4 +93,15 @@ func (s *CommentServiceOp) Get(commentID int64, options interface{}) (*Comment, 
 	resource := new(CommentResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Comment, err
+}
+
+func (s *CommentServiceOp) GetOrderList() []string {
+	str := new(Comment)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

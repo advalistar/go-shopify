@@ -2,12 +2,14 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const fulfillmentServicesBasePath = "fulfillment_services"
 
 type FulfillmentSvcService interface {
 	List(interface{}) ([]FulfillmentSvc, error)
+	GetOrderList() []string
 }
 
 type FulfillmentSvcServiceOp struct {
@@ -40,4 +42,15 @@ func (s *FulfillmentSvcServiceOp) List(options interface{}) ([]FulfillmentSvc, e
 	resource := new(FulfillmentSvcsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.FulfillmentSvcs, err
+}
+
+func (s *FulfillmentSvcServiceOp) GetOrderList() []string {
+	str := new(FulfillmentSvc)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

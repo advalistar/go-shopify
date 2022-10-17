@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -13,6 +14,7 @@ const tenderTransactionsBasePath = "tender_transactions"
 type TenderTransactionService interface {
 	List(interface{}) ([]TenderTransaction, error)
 	ListWithPagination(interface{}) ([]TenderTransaction, *Pagination, error)
+	GetOrderList() []string
 }
 
 type TenderTransactionServiceOp struct {
@@ -68,4 +70,15 @@ func (s *TenderTransactionServiceOp) ListWithPagination(options interface{}) ([]
 	}
 
 	return resource.TenderTransactions, pagination, nil
+}
+
+func (s *TenderTransactionServiceOp) GetOrderList() []string {
+	str := new(TenderTransaction)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

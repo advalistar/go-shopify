@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const (
@@ -10,6 +11,7 @@ const (
 
 type CarrierServiceService interface {
 	List(interface{}) ([]CarrierService, error)
+	GetOrderList() []string
 }
 
 // CarrierServiceServiceOp handles communication with the order related methods of the
@@ -40,4 +42,15 @@ func (s *CarrierServiceServiceOp) List(options interface{}) ([]CarrierService, e
 	path := fmt.Sprintf("%s.json", carrierServicerBasePath)
 	resource := &CarrierServiceResource{}
 	return resource.CarrierServices, s.client.Get(path, resource, options)
+}
+
+func (s *CarrierServiceServiceOp) GetOrderList() []string {
+	str := new(CarrierService)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

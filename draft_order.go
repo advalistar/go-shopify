@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -26,6 +27,7 @@ type DraftOrderService interface {
 	Delete(int64) error
 	Invoice(int64, DraftOrderInvoice) (*DraftOrderInvoice, error)
 	Complete(int64, bool) (*DraftOrder, error)
+	GetOrderList() []string
 
 	// MetafieldsService used for DrafT Order resource to communicate with Metafields resource
 	MetafieldsService
@@ -239,4 +241,15 @@ func (s *DraftOrderServiceOp) UpdateMetafield(draftOrderID int64, metafield Meta
 func (s *DraftOrderServiceOp) DeleteMetafield(draftOrderID int64, metafieldID int64) error {
 	metafieldService := &MetafieldServiceOp{client: s.client, resource: draftOrdersResourceName, resourceID: draftOrderID}
 	return metafieldService.Delete(metafieldID)
+}
+
+func (s *DraftOrderServiceOp) GetOrderList() []string {
+	str := new(DraftOrder)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

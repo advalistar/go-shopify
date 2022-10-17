@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -22,6 +23,7 @@ type ThemeService interface {
 	Get(int64, interface{}) (*Theme, error)
 	Update(Theme) (*Theme, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // ThemeServiceOp handles communication with the theme related methods of
@@ -91,4 +93,15 @@ func (s *ThemeServiceOp) Update(theme Theme) (*Theme, error) {
 func (s *ThemeServiceOp) Delete(themeID int64) error {
 	path := fmt.Sprintf("%s/%d.json", themesBasePath, themeID)
 	return s.client.Delete(path)
+}
+
+func (s *ThemeServiceOp) GetOrderList() []string {
+	str := new(Theme)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

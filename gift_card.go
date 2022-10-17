@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -17,6 +18,7 @@ type GiftCardService interface {
 	Get(int64, interface{}) (*GiftCard, error)
 	List(interface{}) ([]GiftCard, error)
 	ListWithPagination(interface{}) ([]GiftCard, *Pagination, error)
+	GetOrderList() []string
 }
 
 type GiftCardServiceOp struct {
@@ -87,4 +89,15 @@ func (s *GiftCardServiceOp) ListWithPagination(options interface{}) ([]GiftCard,
 	}
 
 	return resource.GiftCards, pagination, nil
+}
+
+func (s *GiftCardServiceOp) GetOrderList() []string {
+	str := new(GiftCard)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

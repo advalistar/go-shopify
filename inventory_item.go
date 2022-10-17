@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -18,6 +19,7 @@ type InventoryItemService interface {
 	ListWithPagination(interface{}) ([]InventoryItem, *Pagination, error)
 	Get(int64, interface{}) (*InventoryItem, error)
 	Update(InventoryItem) (*InventoryItem, error)
+	GetOrderList() []string
 }
 
 // InventoryItemServiceOp is the default implementation of the InventoryItemService interface
@@ -100,4 +102,15 @@ func (s *InventoryItemServiceOp) Update(item InventoryItem) (*InventoryItem, err
 	resource := new(InventoryItemResource)
 	err := s.client.Put(path, wrappedData, resource)
 	return resource.InventoryItem, err
+}
+
+func (s *InventoryItemServiceOp) GetOrderList() []string {
+	str := new(InventoryItem)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

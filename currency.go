@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -9,6 +10,7 @@ const currenciesBasePath = "currencies"
 
 type CurrencyService interface {
 	List(interface{}) ([]Currency, error)
+	GetOrderList() []string
 }
 
 type CurrencyServiceOp struct {
@@ -33,4 +35,15 @@ func (s *CurrencyServiceOp) List(options interface{}) ([]Currency, error) {
 	resource := new(CurrenciesResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Currencies, err
+}
+
+func (s *CurrencyServiceOp) GetOrderList() []string {
+	str := new(Currency)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

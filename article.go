@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -18,6 +19,7 @@ type ArticleService interface {
 	TagsList(interface{}) ([]string, error)
 	List(int64, interface{}) ([]Article, error)
 	ListWithPagination(int64, interface{}) ([]Article, *Pagination, error)
+	GetOrderList() []string
 }
 
 // ArticleServiceOp handles communication with the article related methods of
@@ -102,4 +104,15 @@ func (s *ArticleServiceOp) ListWithPagination(blogID int64, options interface{})
 	}
 
 	return resource.Articles, pagination, nil
+}
+
+func (s *ArticleServiceOp) GetOrderList() []string {
+	str := new(Article)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

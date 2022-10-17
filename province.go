@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/shopspring/decimal"
 )
@@ -10,6 +11,7 @@ const provincesBasePath = "countries/%d/provinces"
 
 type ProvinceService interface {
 	List(int64, interface{}) ([]Province, error)
+	GetOrderList() []string
 }
 
 type ProvinceServiceOp struct {
@@ -38,4 +40,15 @@ func (s *ProvinceServiceOp) List(countryID int64, options interface{}) ([]Provin
 	resource := new(ProvincesResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Provinces, err
+}
+
+func (s *ProvinceServiceOp) GetOrderList() []string {
+	str := new(Province)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

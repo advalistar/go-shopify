@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -17,6 +18,7 @@ type LocationService interface {
 	Get(ID int64, options interface{}) (*Location, error)
 	// Retrieves a count of locations
 	Count(options interface{}) (int, error)
+	GetOrderList() []string
 }
 
 type Location struct {
@@ -74,4 +76,15 @@ type LocationResource struct {
 // Represents the result from the locations.json endpoint
 type LocationsResource struct {
 	Locations []Location `json:"locations"`
+}
+
+func (s *LocationServiceOp) GetOrderList() []string {
+	str := new(Location)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

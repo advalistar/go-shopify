@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -13,6 +14,7 @@ const (
 
 type FulfillmentEventService interface {
 	List(int64, int64, interface{}) ([]FulfillmentEvent, error)
+	GetOrderList() []string
 }
 
 type FulfillmentEventServiceOp struct {
@@ -50,4 +52,15 @@ func (s *FulfillmentEventServiceOp) List(fulfillmentID, orderID int64, options i
 	resource := new(FulfillmentEventsResource)
 	err := s.client.Get(path, resource, options)
 	return resource.FulfillmentEvents, err
+}
+
+func (s *FulfillmentEventServiceOp) GetOrderList() []string {
+	str := new(FulfillmentEvent)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

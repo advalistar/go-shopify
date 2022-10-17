@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -17,6 +18,7 @@ type ScriptTagService interface {
 	Create(ScriptTag) (*ScriptTag, error)
 	Update(ScriptTag) (*ScriptTag, error)
 	Delete(int64) error
+	GetOrderList() []string
 }
 
 // ScriptTagServiceOp handles communication with the shop related methods of the
@@ -103,4 +105,15 @@ func (s *ScriptTagServiceOp) Update(tag ScriptTag) (*ScriptTag, error) {
 // Delete an existing script tag
 func (s *ScriptTagServiceOp) Delete(tagID int64) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", scriptTagsBasePath, tagID))
+}
+
+func (s *ScriptTagServiceOp) GetOrderList() []string {
+	str := new(ScriptTag)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

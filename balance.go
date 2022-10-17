@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const (
@@ -10,6 +11,7 @@ const (
 
 type BalanceService interface {
 	List(interface{}) ([]Balance, error)
+	GetOrderList() []string
 }
 
 // BalanceServiceOp handles communication with the order related methods of the
@@ -34,4 +36,15 @@ func (s *BalanceServiceOp) List(options interface{}) ([]Balance, error) {
 	path := fmt.Sprintf("%s.json", balanceBasePath)
 	resource := &BalanceResource{}
 	return resource.Balance, s.client.Get(path, resource, options)
+}
+
+func (s *BalanceServiceOp) GetOrderList() []string {
+	str := new(Balance)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

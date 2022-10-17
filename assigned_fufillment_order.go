@@ -2,6 +2,7 @@ package goshopify
 
 import (
 	"fmt"
+	"reflect"
 )
 
 const (
@@ -10,6 +11,7 @@ const (
 
 type AssignedFulfillmentOrderService interface {
 	List(interface{}) ([]FulfillmentOrder, error)
+	GetOrderList() []string
 }
 
 // AssignedFulfillmentOrderServiceOp handles communication with the order related methods of the
@@ -28,4 +30,15 @@ func (s *AssignedFulfillmentOrderServiceOp) List(options interface{}) ([]Fulfill
 	path := fmt.Sprintf("%s.json", assignedFulfillmentOrderBasePath)
 	resource := &AssignedFulfillmentOrderResource{}
 	return resource.FulfillmentOrders, s.client.Get(path, resource, options)
+}
+
+func (s *AssignedFulfillmentOrderServiceOp) GetOrderList() []string {
+	str := new(FulfillmentOrder)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -3,6 +3,7 @@ package goshopify
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type EventService interface {
 	Get(int64, interface{}) (*Event, error)
 	List(interface{}) ([]Event, error)
 	ListWithPagination(interface{}) ([]Event, *Pagination, error)
+	GetOrderList() []string
 }
 
 type EventServiceOp struct {
@@ -80,4 +82,15 @@ func (s *EventServiceOp) ListWithPagination(options interface{}) ([]Event, *Pagi
 	}
 
 	return resource.Events, pagination, nil
+}
+
+func (s *EventServiceOp) GetOrderList() []string {
+	str := new(Event)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -27,6 +28,7 @@ type OrderService interface {
 	Cancel(int64, interface{}) (*Order, error)
 	Close(int64) (*Order, error)
 	Open(int64) (*Order, error)
+	GetOrderList() []string
 
 	// MetafieldsService used for Order resource to communicate with Metafields resource
 	MetafieldsService
@@ -443,6 +445,17 @@ func (s *OrderServiceOp) Open(orderID int64) (*Order, error) {
 	resource := new(OrderResource)
 	err := s.client.Post(path, nil, resource)
 	return resource.Order, err
+}
+
+func (s *OrderServiceOp) GetOrderList() []string {
+	str := new(Order)
+
+	var orderList []string
+	for i := 0; i < reflect.TypeOf(str).NumField(); i++ {
+		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
+	}
+
+	return orderList
 }
 
 // List metafields for an order
