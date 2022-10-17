@@ -82,7 +82,7 @@ func (s *LocationServiceOp) GetOrderList() []string {
 	str := new(Location)
 
 	var orderList []string
-	for i := 0; i < reflect.TypeOf(&str).NumField(); i++ {
+	for i := 0; i < reflect.TypeOf(*str).NumField(); i++ {
 		orderList = append(orderList, reflect.TypeOf(str).Field(i).Tag.Get("json"))
 	}
 
